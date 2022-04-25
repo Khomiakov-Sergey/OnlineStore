@@ -2,18 +2,19 @@ package by.it.academy.repositories.product;
 
 import by.it.academy.entities.Product;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository<T> {
-    void create(T product) throws SQLException, ClassNotFoundException;
+    void create(T product);
 
-    void delete(int id) throws SQLException, ClassNotFoundException;
+    void delete(int id);
 
-    void update(int id, String name, double price, int number, String description);
+    void update(T product);
 
-    Optional<T> getProduct(String name);
+    void buy(T product);
 
-    List<Product> getAllProducts() throws SQLException, ClassNotFoundException;
+    Optional<T> getProduct(int id);
+
+    List<Product> getAllProducts();
 }

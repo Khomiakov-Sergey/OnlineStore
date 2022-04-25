@@ -1,7 +1,7 @@
 package by.it.academy.controllers.product;
 
 import by.it.academy.entities.Product;
-import by.it.academy.repositories.connection.ConnectionInt;
+import by.it.academy.repositories.connection.DBConnection;
 import by.it.academy.repositories.connection.MySQLConnection;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
@@ -16,12 +16,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/productList")
+@WebServlet(urlPatterns = "/product/productList")
 public class ProductListController extends HttpServlet {
-    private final ConnectionInt connection = new MySQLConnection();
+    private final DBConnection connection = new MySQLConnection();
     private final ProductRepository<Product> productDAO = new ProductApiRepository(connection);
     private final ProductService<Product> service = new ProductApiService(productDAO);
 
@@ -31,16 +30,8 @@ public class ProductListController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        List<Product> productList = null;
-
-        try {
-            productList = service.getAllProducts();
-        } catch (SQLException | ClassNotFoundException e) {
-            log.info(e.getMessage());
-        }
-
-
+        List<Product> productList = service.getAllProducts();
+        log.info("Show productList " + productList);
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PAGE);
         req.setAttribute("productList", productList);
         requestDispatcher.forward(req, resp);

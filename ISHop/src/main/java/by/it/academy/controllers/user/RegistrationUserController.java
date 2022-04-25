@@ -1,7 +1,7 @@
 package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
-import by.it.academy.repositories.connection.ConnectionInt;
+import by.it.academy.repositories.connection.DBConnection;
 import by.it.academy.repositories.connection.MySQLConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
@@ -16,17 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/user/create")
-public class CreateUserController extends HttpServlet {
+@WebServlet(urlPatterns = "/user/registration")
+public class RegistrationUserController extends HttpServlet {
 
-    private final ConnectionInt connection = new MySQLConnection();
+    private final DBConnection connection = new MySQLConnection();
     private final UserRepository<User> repository = new UserApiRepository(connection);
     private final UserService<User> service = new UserApiService(repository);
 
-    private final static String CREATE_USER_PAGE = "/pages/user/createUserPage.jsp";
-    private final static String USER_LIST_PATH = "/userList";
+    private final static String CREATE_USER_PAGE = "/pages/user/registrationUserPage.jsp";
+    private final static String USER_INFO_PATH = "/user/userInfo";
 
-    public CreateUserController() {
+    public RegistrationUserController() {
     }
 
     @Override
@@ -44,7 +44,7 @@ public class CreateUserController extends HttpServlet {
         final String password = req.getParameter("password");
         final User user = new User(firstName, secondName, age, login, password);
         service.create(user);
-        final RequestDispatcher requestDispatcher = req.getRequestDispatcher(USER_LIST_PATH);
+        final RequestDispatcher requestDispatcher = req.getRequestDispatcher(USER_INFO_PATH);
         requestDispatcher.forward(req, resp);
     }
 }

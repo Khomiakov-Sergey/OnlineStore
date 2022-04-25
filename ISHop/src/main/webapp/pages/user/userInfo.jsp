@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Product List</title>
+    <title>User Info</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -14,6 +13,7 @@
 
 </head>
 <body>
+
 <div style="background: #E0E0E0; height: 85px; padding: 10px;">
     <div style="float: left">
         <h1>IShop</h1>
@@ -42,38 +42,19 @@
 
 </div>
 
-<h3>Product List</h3>
 
-<table class="table table-bordered">
-    <thead align="center">
-    <tr>
-        <th scope="col">№</th>
-        <th scope="col">Name</th>
-        <th scope="col">Price</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Description</th>
-        <th scope="col">Image</th>
-        <th scope="col">Buy</th>
-    </tr>
-    </thead>
+<h3>Hello: ${user.login}</h3>
 
-    <c:forEach items="${productList}" var="product">
-        <tr>
-            <td align="center">${product.id}</
-            >
-            <td align="center">${product.name}</td>
-            <td align="center">${product.price}$</td>
-            <td align="center">${product.number}</td>
-            <td align="center">${product.description}</td>
-            <td align="center"><img src="${pageContext.request.contextPath}/images/${product.id}.jpg"></td>
-            <td>
-                <a href="${pageContext.request.contextPath}/product/buy?id=${product.id}">Buy</a>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
+User First Name: <b>${user.firstName}</b><br/>
+User Second Name: <b>${user.secondName}</b><br/>
+Age: ${user.age } <br/>
 
-<a href="${pageContext.request.contextPath}/product/create">Create Product</a>
+
+<tr>
+    <td colspan="2">
+        <a href="${pageContext.request.contextPath}/user/logout">Logout</a>
+    </td>
+</tr>
 
 <div
         style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">

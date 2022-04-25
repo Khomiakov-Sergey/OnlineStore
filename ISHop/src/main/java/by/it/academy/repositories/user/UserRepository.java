@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface UserRepository<T> {
 
-    void create(T user) throws SQLException, ClassNotFoundException;
+    void create(T user) ;
 
     void delete(int id) throws SQLException, ClassNotFoundException;
 
     void update(int id, String firstName, String secondName, int ager, Map<String, String> credentials);
 
-    Optional<T> getUser(String name) throws SQLException, ClassNotFoundException;
+    T getUser(String name, String password);
 
-    List<T> getAllUsers() throws SQLException, ClassNotFoundException;
+    List<T> getAllUsers();
 }

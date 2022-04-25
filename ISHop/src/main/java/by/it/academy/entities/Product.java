@@ -1,15 +1,16 @@
 package by.it.academy.entities;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Product {
     private int id;
     private String name;
-    private double price;
+    private BigDecimal price;
     private int number;
     private String description;
 
-    public Product(String name, double price, int number, String description) {
+    public Product(String name, BigDecimal price, int number, String description) {
         this.name = name;
         this.price = price;
         this.number = number;
@@ -35,11 +36,11 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -64,7 +65,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id == product.id && Double.compare(product.price, price) == 0 && number == product.number && Objects.equals(name, product.name) && Objects.equals(description, product.description);
+        return id == product.id && number == product.number && Objects.equals(name, product.name) && Objects.equals(price, product.price) && Objects.equals(description, product.description);
     }
 
     @Override

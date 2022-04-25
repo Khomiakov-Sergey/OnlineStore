@@ -3,7 +3,6 @@ package by.it.academy.services.user;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface UserService<T> {
     void create(T user);
@@ -12,7 +11,7 @@ public interface UserService<T> {
 
     void update(int id, String firstName, String secondName, int ager, Map<String, String> credentials);
 
-    Optional<T> getUser(String name) throws SQLException, ClassNotFoundException;
+    T getUser(String login, String password);
 
     List<T> getAllUsers() throws SQLException, ClassNotFoundException;
 }

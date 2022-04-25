@@ -4,14 +4,11 @@ import by.it.academy.entities.Product;
 import by.it.academy.repositories.product.ProductRepository;
 import org.apache.log4j.Logger;
 
-import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProductApiService implements ProductService<Product> {
     private final ProductRepository<Product> repository;
-
-    private final static Logger log = Logger.getLogger(ProductApiService.class);
 
     public ProductApiService(ProductRepository<Product> products) {
         this.repository = products;
@@ -20,36 +17,35 @@ public class ProductApiService implements ProductService<Product> {
 
     @Override
     public void create(Product product) {
-        try {
-            repository.create(product);
-        } catch (SQLException | ClassNotFoundException e) {
-            log.info(e.getMessage());
-        }
+        repository.create(product);
 
     }
 
     @Override
-    public void delete(int id) throws SQLException, ClassNotFoundException {
+    public void delete(int id) {
         repository.delete(id);
     }
 
     @Override
-    public void update(int id, String name, double price, int number, String description) {
+    public void update(Product product) {
+        repository.update(product);
 
     }
 
     @Override
-    public Product getProduct(String name) {
-        return null;
+    public void buy(Product product) {
+        repository.buy(product);
+    }
+
+    @Override
+    public Product getProduct(int id) {
+        return repository.getProduct(id)
+                .orElseThrow(() -> new NoSuchElementException("Product with id " + id + " is not exists"));
     }
 
     @Override
     public List<Product> getAllProducts() {
-        try {
-            return repository.getAllProducts();
-        } catch (SQLException | ClassNotFoundException e) {
-            log.info(e.getMessage());
-        }
-        return Collections.emptyList();
+        return repository.getAllProducts();
+
     }
 }

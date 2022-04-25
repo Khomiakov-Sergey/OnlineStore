@@ -1,18 +1,19 @@
 package by.it.academy.services.product;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductService<T> {
     void create(T product);
 
-    void delete(int id) throws SQLException, ClassNotFoundException;
+    void delete(int id);
 
-    void update(int id, String name, double price, int number, String description);
+    void update(T product);
 
-    T getProduct(String name);
+    void buy(T product);
 
-    List<T> getAllProducts() throws SQLException, ClassNotFoundException;
+    T getProduct(int id);
+
+    List<T> getAllProducts();
 
 
 }

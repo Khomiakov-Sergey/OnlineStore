@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MySQLConnection implements ConnectionInt {
+public class MySQLConnection implements DBConnection {
     private String connectionURL = "jdbc:mysql://localhost:3306/web_app_servlet_db";
     private String userName = "root";
     private String password = "root";
