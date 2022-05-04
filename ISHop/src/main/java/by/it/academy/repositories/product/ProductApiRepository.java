@@ -2,7 +2,6 @@ package by.it.academy.repositories.product;
 
 import by.it.academy.entities.Product;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MySQLConnection;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -20,7 +19,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
     private final static Logger log = Logger.getLogger(ProductApiRepository.class);
 
     public ProductApiRepository(DBConnection connection) {
-        this.connection = new MySQLConnection();
+        this.connection = connection;
     }
 
     @Override
@@ -38,7 +37,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
             conn.close();
             log.info("Create product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t create product" + e.getMessage());
         }
     }
 
@@ -54,7 +53,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
             conn.close();
             log.info("Delete product with next id:" + id);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t delete product" + e.getMessage());
         }
     }
 
@@ -74,7 +73,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
             conn.close();
             log.info("Update product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t update product" + e.getMessage());
         }
     }
 
@@ -91,7 +90,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
             conn.close();
             log.info("Purchase of product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t buy product" + e.getMessage());
         }
     }
 
@@ -108,7 +107,7 @@ public class ProductApiRepository implements ProductRepository<Product> {
         Connection conn;
         try {
             conn = connection.getConnection();
-            String sql = "Select * from PRODUCT_LIST utf8";
+            String sql = "Select * from PRODUCT_LIST";
             PreparedStatement pstm = conn.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
@@ -123,9 +122,9 @@ public class ProductApiRepository implements ProductRepository<Product> {
             }
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t get list of products" + e.getMessage());
         }
-        log.info("List of products with next value:" + list);
+        log.info("Get list of products");
         return list;
     }
 }

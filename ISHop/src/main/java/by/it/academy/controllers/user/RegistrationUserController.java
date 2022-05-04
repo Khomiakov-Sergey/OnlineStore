@@ -2,11 +2,12 @@ package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MySQLConnection;
+import by.it.academy.repositories.connection.MyDBConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
 import by.it.academy.services.user.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,12 +20,14 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/user/registration")
 public class RegistrationUserController extends HttpServlet {
 
-    private final DBConnection connection = new MySQLConnection();
+    private final DBConnection connection = new MyDBConnection();
     private final UserRepository<User> repository = new UserApiRepository(connection);
     private final UserService<User> service = new UserApiService(repository);
 
     private final static String CREATE_USER_PAGE = "/pages/user/registrationUserPage.jsp";
     private final static String USER_INFO_PATH = "/user/userInfo";
+
+    private final static Logger log = Logger.getLogger(RegistrationUserController.class);
 
     public RegistrationUserController() {
     }
@@ -43,6 +46,7 @@ public class RegistrationUserController extends HttpServlet {
         final String login = req.getParameter("login");
         final String password = req.getParameter("password");
         final User user = new User(firstName, secondName, age, login, password);
+        log.info("We are trying to register user from controller" + user);
         service.create(user);
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher(USER_INFO_PATH);
         requestDispatcher.forward(req, resp);

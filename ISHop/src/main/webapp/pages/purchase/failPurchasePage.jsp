@@ -16,33 +16,9 @@
 </head>
 <body>
 
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
+<c:import url="/pages/fragments/header.jsp"/>
+<c:import url="/pages/fragments/menu.jsp"/>
 
-    <div style="float: right; padding: 10px; text-align: right;">
-
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
 <table class="table table-bordered">
     <tr>
         <td align="center">Sorry! But we don`t have enough quantity of these phone ${product.name}. Please, choose less
@@ -51,11 +27,7 @@
 
 </table>
 
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
+<c:import url="/pages/fragments/footer.jsp"/>
 
-    @Copyright it-academy.by
-
-</div>
 </body>
 </html>

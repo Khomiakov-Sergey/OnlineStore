@@ -9,36 +9,34 @@ import by.it.academy.services.product.ProductApiService;
 import by.it.academy.services.product.ProductService;
 import org.apache.log4j.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = "/product/productList")
-public class ProductListController extends HttpServlet {
+@WebServlet(urlPatterns = "/product/delete")
+public class DeleteProductController extends HttpServlet {
     private final DBConnection connection = new MyDBConnection();
     private final ProductRepository<Product> productDAO = new ProductApiRepository(connection);
     private final ProductService<Product> service = new ProductApiService(productDAO);
 
-    private final static String PRODUCT_LIST_PAGE = "/pages/product/productList.jsp";
+    private final static Logger log = Logger.getLogger(DeleteProductController.class);
 
-    private final static Logger log = Logger.getLogger(ProductListController.class);
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("We are trying to get productList from controller");
-        List<Product> productList = service.getAllProducts();
-        final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PAGE);
-        req.setAttribute("productList", productList);
-        requestDispatcher.forward(req, resp);
+    public DeleteProductController() {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        log.info("We are trying to delete product with id" + id + " from controller");
+        service.delete(id);
+        resp.sendRedirect(req.getContextPath() + "/product/productList");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doGet(req, resp);
     }
 }

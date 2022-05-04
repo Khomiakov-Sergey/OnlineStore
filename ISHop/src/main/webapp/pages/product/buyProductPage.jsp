@@ -16,33 +16,8 @@
 </head>
 <body>
 
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
-
-    <div style="float: right; padding: 10px; text-align: right;">
-
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
+<c:import url="/pages/fragments/header.jsp"/>
+<c:import url="/pages/fragments/menu.jsp"/>
 
 <h3>Buy Product</h3>
 
@@ -67,7 +42,8 @@
             <td align="center">${product.price}$</td>
             <td align="center">${product.description}</td>
             <td align="center"><img src="${pageContext.request.contextPath}/images/${product.id}.jpg"></td>
-            <td><input type="text" name="quantity" placeholder="quantity"/></td>
+            <td><input type="text" name="quantity" placeholder="quantity" pattern="^[0-9]+$"
+                       title="Quantity should only contain integers. e.g. 8"/></td>
         </tr>
     </table>
     <br/>
@@ -79,11 +55,7 @@
     </tr>
 </form>
 
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
+<c:import url="/pages/fragments/footer.jsp"/>
 
-    @Copyright it-academy.by
-
-</div>
 </body>
 </html>

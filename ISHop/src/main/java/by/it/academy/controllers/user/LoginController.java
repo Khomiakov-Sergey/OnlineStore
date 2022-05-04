@@ -2,7 +2,7 @@ package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MySQLConnection;
+import by.it.academy.repositories.connection.MyDBConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/user/login")
 public class LoginController extends HttpServlet {
 
-    private final DBConnection connection = new MySQLConnection();
+    private final DBConnection connection = new MyDBConnection();
     private final UserRepository<User> repository = new UserApiRepository(connection);
     private final UserService<User> service = new UserApiService(repository);
 
@@ -41,16 +41,15 @@ public class LoginController extends HttpServlet {
         String errorString = null;
         User user = null;
         if (login == null || password == null || login.length() == 0 || password.length() == 0){
-            errorString = " Required login and password!";
+            errorString = " Required valid login and password!";
             hasError = true;
-            log.info(errorString);
-
+            log.info("Login or password incorrect: " + errorString);
         } else {
             user = service.getUser(login, password);
             if (user == null) {
                 errorString = " Login or Password incorrect";
                 hasError = true;
-                log.info(errorString);
+                log.info("Can`t find user in data base: " + errorString);
             }
         }
         if (hasError){
@@ -59,7 +58,8 @@ public class LoginController extends HttpServlet {
         } else{
             HttpSession session = req.getSession();
             session.setAttribute("loginedUser", user);
-            log.info("Opened session for user: " + user);
+            session.setAttribute("userType", user.getUserType());
+            log.info("Opened session for user: " + user.getLogin());
             resp.sendRedirect(req.getContextPath() + "/user/userInfo");
         }
     }

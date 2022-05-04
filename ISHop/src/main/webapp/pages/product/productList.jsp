@@ -14,35 +14,13 @@
 
 </head>
 <body>
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
-
-    <div style="float: right; padding: 10px; text-align: right;">
-
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
+<c:import url="/pages/fragments/header.jsp"/>
+<c:import url="/pages/fragments/menu.jsp"/>
 
 <h3>Product List</h3>
+<c:if test="${userType == 'ADMIN'}">
+    <a href="${pageContext.request.contextPath}/product/create">Create Product</a>
+</c:if>
 
 <table class="table table-bordered">
     <thead align="center">
@@ -53,34 +31,46 @@
         <th scope="col">Quantity</th>
         <th scope="col">Description</th>
         <th scope="col">Image</th>
-        <th scope="col">Buy</th>
+        <c:choose>
+            <c:when test="${sessionScope.userType == 'ADMIN'}">
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </c:when>
+            <c:otherwise>
+                <th scope="col">Buy</th>
+            </c:otherwise>
+        </c:choose>
     </tr>
     </thead>
 
     <c:forEach items="${productList}" var="product">
         <tr>
-            <td align="center">${product.id}</
-            >
+            <td align="center">${product.id}</td>
             <td align="center">${product.name}</td>
             <td align="center">${product.price}$</td>
             <td align="center">${product.number}</td>
             <td align="center">${product.description}</td>
             <td align="center"><img src="${pageContext.request.contextPath}/images/${product.id}.jpg"></td>
-            <td>
-                <a href="${pageContext.request.contextPath}/product/buy?id=${product.id}">Buy</a>
-            </td>
-        </tr>
+            <c:choose>
+                <c:when test="${sessionScope.userType == 'ADMIN'}">
+                    <td>
+                        <a href="${pageContext.request.contextPath}/product/edit?id=${product.id}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/product/delete?id=${product.id}">Delete</a>
+                    </td>
+                </c:when>
+                <c:otherwise>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/product/buy?id=${product.id}">Buy</a>
+                    </td>
+                </c:otherwise>
+            </c:choose>
+         </tr>
     </c:forEach>
 </table>
 
-<a href="${pageContext.request.contextPath}/product/create">Create Product</a>
-
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
-
-    @Copyright it-academy.by
-
-</div>
+<c:import url="/pages/fragments/footer.jsp"/>
 
 </body>
 </html>

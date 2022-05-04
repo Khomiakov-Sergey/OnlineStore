@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,41 +16,15 @@
 </head>
 <body>
 
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
-
-    <div style="float: right; padding: 10px; text-align: right;">
-
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
-
+<c:import url="/pages/fragments/header.jsp"/>
+<c:import url="/pages/fragments/menu.jsp"/>
 
 <h3>Hello: ${user.login}</h3>
 
 User First Name: <b>${user.firstName}</b><br/>
 User Second Name: <b>${user.secondName}</b><br/>
+User Type: <b>${user.userType}</b><br/>
 Age: ${user.age } <br/>
-
 
 <tr>
     <td colspan="2">
@@ -56,12 +32,7 @@ Age: ${user.age } <br/>
     </td>
 </tr>
 
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
-
-    @Copyright it-academy.by
-
-</div>
+<c:import url="/pages/fragments/footer.jsp"/>
 
 </body>
 </html>

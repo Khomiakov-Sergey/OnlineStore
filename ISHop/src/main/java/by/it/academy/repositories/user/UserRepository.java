@@ -3,7 +3,6 @@ package by.it.academy.repositories.user;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface UserRepository<T> {
 

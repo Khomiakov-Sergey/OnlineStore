@@ -1,6 +1,7 @@
 package by.it.academy.repositories.user;
 
 import by.it.academy.entities.User;
+import by.it.academy.entities.UserType;
 import by.it.academy.repositories.connection.DBConnection;
 import org.apache.log4j.Logger;
 
@@ -37,7 +38,7 @@ public class UserApiRepository implements UserRepository<User> {
             conn.close();
             log.info("Create user with next value:" + user);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t create new user" + e.getMessage());
         }
     }
 
@@ -61,15 +62,19 @@ public class UserApiRepository implements UserRepository<User> {
             pstm.setString(2, password);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String firstName = rs.getString("FIRST_NAME");
                 String secondName = rs.getString("SECOND_NAME");
+                String userType = rs.getString("USER_TYPE");
                 int age = rs.getInt("AGE");
                 user = new User(firstName, secondName, age, login, password);
+                user.setUserType(UserType.valueOf(userType));
+                user.setId(id);
             }
             conn.close();
             log.info("Get user with next value:" + user);
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t get user" + e.getMessage());
         }
         return user;
     }
@@ -84,19 +89,23 @@ public class UserApiRepository implements UserRepository<User> {
             PreparedStatement pstm = conn.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String firstName = rs.getString("FIRST_NAME");
                 String secondName = rs.getString("SECOND_NAME");
+                String userType = rs.getString("USER_TYPE");
                 int age = rs.getInt("AGE");
                 String login = rs.getString("LOGIN");
                 String password = rs.getString("PASSWORD");
                 User user = new User(firstName, secondName, age, login, password);
+                user.setUserType(UserType.valueOf(userType));
+                user.setId(id);
                 list.add(user);
             }
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
-            log.info(e.getMessage());
+            log.info("Can`t get list of users" + e.getMessage());
         }
-        log.info("Get list of users with next value:" + list);
+        log.info("Get list of users ");
         return list;
     }
 }

@@ -10,8 +10,7 @@
   <packaging>war</packaging>
 
   <name>ISHop Maven Webapp</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <url>http://www.it-academy.by</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,6 +51,17 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.24</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>c3p0</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.1.2</version>
     </dependency>
   </dependencies>
 

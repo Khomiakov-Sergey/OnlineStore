@@ -4,6 +4,8 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>IShop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -11,35 +13,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
 
-    <div style="float: right; padding: 10px; text-align: right;">
+<c:import url="pages/fragments/header.jsp"/>
+<c:import url="pages/fragments/menu.jsp"/>
 
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
 <h3 align="center">Home Page</h3>
-
 
 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -73,11 +51,8 @@
         <span class="visually-hidden">Следующий</span>
     </button>
 </div>
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
 
-    @Copyright it-academy.by
+<c:import url="pages/fragments/footer.jsp"/>
 
-</div>
 </body>
 </html>

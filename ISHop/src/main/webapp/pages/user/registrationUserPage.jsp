@@ -4,6 +4,7 @@
 
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Create Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -13,57 +14,37 @@
 </head>
 <body>
 
-<div style="background: #E0E0E0; height: 85px; padding: 10px;">
-    <div style="float: left">
-        <h1>IShop</h1>
-    </div>
-
-    <div style="float: right; padding: 10px; text-align: right;">
-
-        <!-- User store in session with attribute: loginedUser -->
-        Hello <b>${loginedUser.login}</b>
-        <br/>
-        Search <input name="search">
-
-    </div>
-
-</div>
-
-<div style="padding: 5px;" align="right">
-
-    <a href="${pageContext.request.contextPath}/">Home</a>
-    |
-    <a href="${pageContext.request.contextPath}/product/productList">Product List</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/userInfo">My Account Info</a>
-    |
-    <a href="${pageContext.request.contextPath}/user/login">Login</a>
-
-</div>
+<c:import url="/pages/fragments/header.jsp"/>
+<c:import url="/pages/fragments/menu.jsp"/>
 
 <h3>Create User</h3>
 <form method="POST" action="${pageContext.request.contextPath}/user/registration">
     <table border="0">
         <tr>
             <td>First name</td>
-            <td><input type="text" name="firstName" placeholder="firstName"/></td>
+            <td><input type="text" name="firstName" placeholder="firstName" pattern="^[a-zA-Zа-яА-ЯёЁ]+$"
+                       title="First name should contain only letters. e.g. Jonh"/></td>
         </tr>
         <tr>
             <td>Second name</td>
-            <td><input type="text" name="secondName" placeholder="secondName"/></td>
+            <td><input type="text" name="secondName" placeholder="secondName" pattern="^[a-zA-Zа-яА-ЯёЁ]+$"
+                       title="Second name should contain only letters. e.g. Smith"/></td>
         </tr>
         <tr>
             <td>Age</td>
-            <td><input type="text" name="age" placeholder="age"/></td>
+            <td><input type="text" name="age" placeholder="age" pattern="^[0-9]{1,3}$"
+                       title="Age should only contain integers. e.g. 28"/></td>
         </tr>
 
         <tr>
             <td>Login</td>
-            <td><input type="text" name="login" placeholder="login"/></td>
+            <td><input type="text" name="login" placeholder="login" pattern="^\w+$"
+                       title="First name should contain letters + numbers, or just letters. e.g. Jonh1"/></td>
         </tr>
         <tr>
             <td>Password</td>
-            <td><input type="password" name="password" placeholder="password"/></td>
+            <td><input type="password" name="password" placeholder="password" pattern="^\w+$"
+                       title="Password should contain letters or numbers. e.g. hsdw234D"/></td>
         </tr>
 
         <tr>
@@ -75,12 +56,7 @@
     </table>
 </form>
 
-<div
-        style="background: #E0E0E0; text-align: center; padding: 5px; margin-top: 10px;">
-
-    @Copyright it-academy.by
-
-</div>
+<c:import url="/pages/fragments/footer.jsp"/>
 
 </body>
 </html>
