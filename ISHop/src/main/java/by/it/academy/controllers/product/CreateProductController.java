@@ -2,7 +2,7 @@ package by.it.academy.controllers.product;
 
 import by.it.academy.entities.Product;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MyDBConnection;
+import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
 import by.it.academy.services.product.ProductApiService;
@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 
 @WebServlet(urlPatterns = "/product/create")
 public class CreateProductController extends HttpServlet {
-    private final DBConnection connection = new MyDBConnection();
+    private final DBConnection connection = new SQLDBConnection();
     private final ProductRepository<Product> repository = new ProductApiRepository(connection);
     private final ProductService<Product> service = new ProductApiService(repository);
 
@@ -29,9 +29,6 @@ public class CreateProductController extends HttpServlet {
     private final static String PRODUCT_LIST_PATH = "/product/productList";
 
     private final static Logger log = Logger.getLogger(CreateProductController.class);
-
-    public CreateProductController() {
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

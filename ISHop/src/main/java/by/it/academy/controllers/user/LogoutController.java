@@ -21,9 +21,7 @@ public class LogoutController extends HttpServlet {
         HttpSession session = req.getSession(false);
         User loginedUser = (User) session.getAttribute("loginedUser");
         log.info(loginedUser.getLogin() + " log out");
-        if (session != null) {
-            session.invalidate();
-        }
+        session.invalidate();
         String errorString = "You are successfully logged out";
         req.setAttribute("errorString", errorString);
         req.getRequestDispatcher("/pages/user/login.jsp").forward(req, resp);

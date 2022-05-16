@@ -53,9 +53,7 @@ public class UserApiRepository implements UserRepository<User> {
     @Override
     public User getUser(String login, String password) {
         User user = null;
-        Connection conn;
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "Select * from USER_LIST u WHERE u.LOGIN = ? AND u.PASSWORD = ?";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setString(1, login);
@@ -71,7 +69,6 @@ public class UserApiRepository implements UserRepository<User> {
                 user.setUserType(UserType.valueOf(userType));
                 user.setId(id);
             }
-            conn.close();
             log.info("Get user with next value:" + user);
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t get user" + e.getMessage());

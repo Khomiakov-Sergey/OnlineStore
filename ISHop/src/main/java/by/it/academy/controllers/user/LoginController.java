@@ -2,7 +2,7 @@ package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MyDBConnection;
+import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/user/login")
 public class LoginController extends HttpServlet {
 
-    private final DBConnection connection = new MyDBConnection();
+    private final DBConnection connection = new SQLDBConnection();
     private final UserRepository<User> repository = new UserApiRepository(connection);
     private final UserService<User> service = new UserApiService(repository);
 
@@ -29,33 +30,26 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
+        req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
         boolean hasError = false;
-        String errorString = null;
-        User user = null;
-        if (login == null || password == null || login.length() == 0 || password.length() == 0){
-            errorString = " Required valid login and password!";
+        String error = null;
+        User user;
+        user = service.getUser(login, password);
+        if (Objects.isNull(user)) {
+            error = " Login or Password incorrect";
             hasError = true;
-            log.info("Login or password incorrect: " + errorString);
-        } else {
-            user = service.getUser(login, password);
-            if (user == null) {
-                errorString = " Login or Password incorrect";
-                hasError = true;
-                log.info("Can`t find user in data base: " + errorString);
-            }
+            log.info("Can`t find user in data base: " + error);
         }
-        if (hasError){
-            req.setAttribute("errorString", errorString);
+        if (hasError) {
+            req.setAttribute("error", error);
             req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
-        } else{
+        } else {
             HttpSession session = req.getSession();
             session.setAttribute("loginedUser", user);
             session.setAttribute("userType", user.getUserType());
@@ -63,4 +57,7 @@ public class LoginController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/user/userInfo");
         }
     }
+
+
 }
+

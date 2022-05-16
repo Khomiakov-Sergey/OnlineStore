@@ -7,9 +7,6 @@ import java.io.IOException;
 @WebFilter(filterName = "encodingFilter", urlPatterns = { "/*" })
 public class EncodingFilter implements Filter {
 
-    public EncodingFilter() {
-    }
-
     @Override
     public void init(FilterConfig fConfig) {
     }

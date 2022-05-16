@@ -2,7 +2,7 @@ package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MyDBConnection;
+import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @WebServlet(urlPatterns = "/user/registration")
 public class RegistrationUserController extends HttpServlet {
 
-    private final DBConnection connection = new MyDBConnection();
+    private final DBConnection connection = new SQLDBConnection();
     private final UserRepository<User> repository = new UserApiRepository(connection);
     private final UserService<User> service = new UserApiService(repository);
 
@@ -28,9 +28,6 @@ public class RegistrationUserController extends HttpServlet {
     private final static String USER_INFO_PATH = "/user/userInfo";
 
     private final static Logger log = Logger.getLogger(RegistrationUserController.class);
-
-    public RegistrationUserController() {
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

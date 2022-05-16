@@ -1,6 +1,7 @@
 package by.it.academy.filters;
 
 import by.it.academy.entities.UserType;
+import org.apache.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -11,6 +12,10 @@ import java.util.Objects;
 
 @WebFilter(urlPatterns = {"/product/update", "/product/create", "/product/delete"})
 public class AuthorizationFilter implements Filter {
+
+    private final static Logger log = Logger.getLogger(AuthorizationFilter.class);
+
+    private final static String LOGIN_PAGE = "/pages/user/login.jsp";
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -24,10 +29,12 @@ public class AuthorizationFilter implements Filter {
             final UserType userType = (UserType) session.getAttribute("userType");
             if (userType == UserType.ADMIN) {
                 filterChain.doFilter(servletRequest, servletResponse);
+                log.info("ADMIN went through AuthorizationFilter");
             } else {
-                String errorString = "You are not ADMIN!";
-                httpServletRequest.setAttribute("errorString", errorString);
-                final RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher("/pages/user/login.jsp");
+                String error = "You are not ADMIN!";
+                log.info("NOT ADMIN was trying to go through AuthorizationFilter and get access to ADMIN methods");
+                httpServletRequest.setAttribute("error", error);
+                final RequestDispatcher requestDispatcher = httpServletRequest.getRequestDispatcher(LOGIN_PAGE);
                 requestDispatcher.forward(httpServletRequest, servletResponse);
             }
         } else {

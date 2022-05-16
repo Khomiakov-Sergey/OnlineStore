@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class MyDBConnection implements DBConnection {
+public class SQLDBConnection implements DBConnection {
     private String connectionURL;
     private String userName;
     private String password;
@@ -17,14 +17,14 @@ public class MyDBConnection implements DBConnection {
 
     private Connection connection;
 
-    private final static Logger log = Logger.getLogger(MyDBConnection.class);
+    private final static Logger log = Logger.getLogger(SQLDBConnection.class);
 
-    public MyDBConnection() {
+    public SQLDBConnection() {
     }
 
     private void getConfig() {
         Properties properties = new Properties();
-        try (InputStream is = MyDBConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
+        try (InputStream is = SQLDBConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
             properties.load(is);
         } catch (IOException e) {
             log.info("Can`t get resource bundle" + e.getMessage());

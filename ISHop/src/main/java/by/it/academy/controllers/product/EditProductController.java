@@ -2,7 +2,7 @@ package by.it.academy.controllers.product;
 
 import by.it.academy.entities.Product;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MyDBConnection;
+import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
 import by.it.academy.services.product.ProductApiService;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 
 @WebServlet(urlPatterns = "/product/edit")
 public class EditProductController extends HttpServlet {
-    private final DBConnection connection = new MyDBConnection();
+    private final DBConnection connection = new SQLDBConnection();
     private final ProductRepository<Product> repository = new ProductApiRepository(connection);
     private final ProductService<Product> service = new ProductApiService(repository);
 

@@ -2,7 +2,7 @@ package by.it.academy.controllers.product;
 
 import by.it.academy.entities.Product;
 import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.MyDBConnection;
+import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
 import by.it.academy.services.product.ProductApiService;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 
 @WebServlet(urlPatterns = "/product/buy")
 public class BuyProductController extends HttpServlet {
-    private final DBConnection connection = new MyDBConnection();
+    private final DBConnection connection = new SQLDBConnection();
     private final ProductRepository<Product> repository = new ProductApiRepository(connection);
     private final ProductService<Product> service = new ProductApiService(repository);
 
@@ -29,9 +29,6 @@ public class BuyProductController extends HttpServlet {
     private final static String FAIL_PURCHASE_PAGE = "/pages/purchase/failPurchasePage.jsp";
 
     private final static Logger log = Logger.getLogger(BuyProductController.class);
-
-    public BuyProductController() {
-    }
 
     @Override
 
@@ -56,13 +53,13 @@ public class BuyProductController extends HttpServlet {
         req.setAttribute("quantity", quantity);
         req.setAttribute("product", product);
         if (number >= quantity) {
-            service.buy(product);
             log.info("We are trying to buy product from controller" + product);
+            service.buy(product);
             final RequestDispatcher requestDispatcher = req.getRequestDispatcher(SUCCESS_PURCHASE_PAGE);
             requestDispatcher.forward(req, resp);
         } else {
-            final RequestDispatcher requestDispatcher = req.getRequestDispatcher(FAIL_PURCHASE_PAGE);
             log.info("Quantity in stocks less than user wants to buy: " + number + " < " + quantity);
+            final RequestDispatcher requestDispatcher = req.getRequestDispatcher(FAIL_PURCHASE_PAGE);
             requestDispatcher.forward(req, resp);
         }
     }
