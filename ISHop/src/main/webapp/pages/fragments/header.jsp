@@ -10,7 +10,7 @@
         <!-- User store in session with attribute: loginedUser -->
         Hello <b>${loginedUser.login}</b>
         <br/>
-        Search <input name="search">
+        Search <input type="search" name="search">
 
     </div>
 

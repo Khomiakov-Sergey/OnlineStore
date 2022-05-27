@@ -24,17 +24,15 @@ public class ProductApiRepository implements ProductRepository<Product> {
 
     @Override
     public void create(Product product) {
-        Connection conn;
-        try {
-            conn = connection.getConnection();
-            String sql = "INSERT INTO PRODUCT_LIST(NAME, PRICE, NUMBER, DESCRIPTION) values(?,?,?,?)";
+        try (Connection conn = connection.getConnection()) {
+            String sql = "INSERT INTO PRODUCT_LIST(CATEGORY_ID,NAME, PRICE, NUMBER, DESCRIPTION) values(?,?,?,?,?)";
             PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, product.getName());
-            pstm.setBigDecimal(2, product.getPrice());
-            pstm.setInt(3, product.getNumber());
-            pstm.setString(4, product.getDescription());
+            pstm.setInt(1, product.getCategoryId());
+            pstm.setString(2, product.getName());
+            pstm.setBigDecimal(3, product.getPrice());
+            pstm.setInt(4, product.getNumber());
+            pstm.setString(5, product.getDescription());
             pstm.executeUpdate();
-            conn.close();
             log.info("Create product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t create product" + e.getMessage());
@@ -43,14 +41,11 @@ public class ProductApiRepository implements ProductRepository<Product> {
 
     @Override
     public void delete(int id) {
-        Connection conn;
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "DELETE FROM PRODUCT_LIST WHERE ID= ?";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
             pstm.executeUpdate();
-            conn.close();
             log.info("Delete product with next id:" + id);
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t delete product" + e.getMessage());
@@ -59,18 +54,16 @@ public class ProductApiRepository implements ProductRepository<Product> {
 
     @Override
     public void update(Product product) {
-        Connection conn;
-        try {
-            conn = connection.getConnection();
-            String sql = "UPDATE PRODUCT_LIST SET NAME=?, PRICE=?, NUMBER=?, DESCRIPTION=? WHERE ID=?";
+        try (Connection conn = connection.getConnection()) {
+            String sql = "UPDATE PRODUCT_LIST SET CATEGORY_ID=?, NAME=?, PRICE=?, NUMBER=?, DESCRIPTION=? WHERE ID=?";
             PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, product.getName());
-            pstm.setBigDecimal(2, product.getPrice());
-            pstm.setInt(3, product.getNumber());
-            pstm.setString(4, product.getDescription());
-            pstm.setInt(5, product.getId());
+            pstm.setInt(1, product.getCategoryId());
+            pstm.setString(2, product.getName());
+            pstm.setBigDecimal(3, product.getPrice());
+            pstm.setInt(4, product.getNumber());
+            pstm.setString(5, product.getDescription());
+            pstm.setInt(6, product.getId());
             pstm.executeUpdate();
-            conn.close();
             log.info("Update product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t update product" + e.getMessage());
@@ -79,15 +72,12 @@ public class ProductApiRepository implements ProductRepository<Product> {
 
     @Override
     public void buy(Product product) {
-        Connection conn;
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "UPDATE PRODUCT_LIST SET NUMBER=? WHERE ID=?";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setInt(1, product.getNumber());
             pstm.setInt(2, product.getId());
             pstm.executeUpdate();
-            conn.close();
             log.info("Purchase of product with next value:" + product);
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t buy product" + e.getMessage());
@@ -104,23 +94,21 @@ public class ProductApiRepository implements ProductRepository<Product> {
     @Override
     public List<Product> getAllProducts() {
         List<Product> list = new ArrayList<>();
-        Connection conn;
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "Select * from PRODUCT_LIST";
             PreparedStatement pstm = conn.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("ID");
+                int category_id = rs.getInt("CATEGORY_ID");
                 String name = rs.getString("NAME");
                 BigDecimal price = (rs.getBigDecimal("PRICE"));
                 int number = rs.getInt("NUMBER");
                 String description = rs.getString("DESCRIPTION");
-                Product product = new Product(name, price, number, description);
+                Product product = new Product(category_id, name, price, number, description);
                 product.setId(id);
                 list.add(product);
             }
-            conn.close();
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t get list of products" + e.getMessage());
         }

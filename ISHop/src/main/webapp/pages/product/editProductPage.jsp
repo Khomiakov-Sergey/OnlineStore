@@ -29,6 +29,18 @@
         </tr>
 
         <tr>
+            <td>Category</td>
+            <td>
+                <select id="categoryId" name="categoryId" required="required">
+                    <option value="1">Iphone</option>
+                    <option value="2">Mac</option>
+                    <option value="3">Ipad</option>
+                    <option value="4">Watch</option>
+                </select>
+            <td>
+        </tr>
+
+        <tr>
             <td>Name</td>
             <td><input type="text" name="name" placeholder="name"/></td>
         </tr>

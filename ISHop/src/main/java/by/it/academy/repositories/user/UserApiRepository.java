@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserApiRepository implements UserRepository<User> {
     private final DBConnection connection;
@@ -24,9 +25,7 @@ public class UserApiRepository implements UserRepository<User> {
 
     @Override
     public void create(User user) {
-        Connection conn;
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "INSERT INTO USER_LIST(FIRST_NAME, SECOND_NAME, AGE, LOGIN, PASSWORD) values(?,?,?,?,?)";
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.setString(1, user.getFirstName());
@@ -51,37 +50,16 @@ public class UserApiRepository implements UserRepository<User> {
     }
 
     @Override
-    public User getUser(String login, String password) {
-        User user = null;
-        try (Connection conn = connection.getConnection()) {
-            String sql = "Select * from USER_LIST u WHERE u.LOGIN = ? AND u.PASSWORD = ?";
-            PreparedStatement pstm = conn.prepareStatement(sql);
-            pstm.setString(1, login);
-            pstm.setString(2, password);
-            ResultSet rs = pstm.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String firstName = rs.getString("FIRST_NAME");
-                String secondName = rs.getString("SECOND_NAME");
-                String userType = rs.getString("USER_TYPE");
-                int age = rs.getInt("AGE");
-                user = new User(firstName, secondName, age, login, password);
-                user.setUserType(UserType.valueOf(userType));
-                user.setId(id);
-            }
-            log.info("Get user with next value:" + user);
-        } catch (ClassNotFoundException | SQLException e) {
-            log.info("Can`t get user" + e.getMessage());
-        }
-        return user;
+    public Optional<User> getUser(String login, String password) {
+        return getAllUsers().stream()
+                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
+                .findFirst();
     }
 
     @Override
     public List<User> getAllUsers() {
-        Connection conn;
         List<User> list = new ArrayList<>();
-        try {
-            conn = connection.getConnection();
+        try (Connection conn = connection.getConnection()) {
             String sql = "Select * from USER_LIST";
             PreparedStatement pstm = conn.prepareStatement(sql);
             ResultSet rs = pstm.executeQuery();
@@ -98,7 +76,6 @@ public class UserApiRepository implements UserRepository<User> {
                 user.setId(id);
                 list.add(user);
             }
-            conn.close();
         } catch (ClassNotFoundException | SQLException e) {
             log.info("Can`t get list of users" + e.getMessage());
         }

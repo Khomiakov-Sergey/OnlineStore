@@ -5,6 +5,7 @@ import by.it.academy.repositories.user.UserRepository;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class UserApiService implements UserService<User> {
     private final UserRepository<User> repository;
@@ -28,7 +29,7 @@ public class UserApiService implements UserService<User> {
     }
 
     @Override
-    public User getUser(String login, String password) {
+    public Optional<User> getUser(String login, String password) {
         return repository.getUser(login, password);
     }
 

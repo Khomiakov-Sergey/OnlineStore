@@ -43,12 +43,13 @@ public class BuyProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final int id = Integer.parseInt(req.getParameter("id"));
+        final int categoryId = Integer.parseInt(req.getParameter("categoryId"));
         final String name = req.getParameter("name");
         final BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
         final int number = Integer.parseInt(req.getParameter("number"));
         final int quantity = Integer.parseInt(req.getParameter("quantity"));
         final String description = req.getParameter("description");
-        final Product product = new Product(name, price, number - quantity, description);
+        final Product product = new Product(categoryId, name, price, number - quantity, description);
         product.setId(id);
         req.setAttribute("quantity", quantity);
         req.setAttribute("product", product);

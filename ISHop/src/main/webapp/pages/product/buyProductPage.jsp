@@ -23,6 +23,7 @@
 
 <form method="POST" action="${pageContext.request.contextPath}/product/buy">
     <input type="hidden" name="id" value="${product.id}"/>
+    <input type="hidden" name="category_id" value="${product.categoryId}"/>
     <input type="hidden" name="name" value="${product.name}"/>
     <input type="hidden" name="price" value="${product.price}"/>
     <input type="hidden" name="description" value="${product.description}"/>

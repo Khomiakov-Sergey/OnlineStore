@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class Product {
     private int id;
+    private final int categoryId;
     private final String name;
     private final BigDecimal price;
     private final int number;

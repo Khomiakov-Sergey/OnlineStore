@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/user/login")
 public class LoginController extends HttpServlet {
@@ -39,9 +39,8 @@ public class LoginController extends HttpServlet {
         String password = req.getParameter("password");
         boolean hasError = false;
         String error = null;
-        User user;
-        user = service.getUser(login, password);
-        if (Objects.isNull(user)) {
+        Optional<User> checkedUser = service.getUser(login, password);
+        if (!checkedUser.isPresent()) {
             error = " Login or Password incorrect";
             hasError = true;
             log.info("Can`t find user in data base: " + error);
@@ -50,6 +49,7 @@ public class LoginController extends HttpServlet {
             req.setAttribute("error", error);
             req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
         } else {
+            User user = checkedUser.get();
             HttpSession session = req.getSession();
             session.setAttribute("loginedUser", user);
             session.setAttribute("userType", user.getUserType());

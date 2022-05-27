@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 @WebServlet(urlPatterns = "/product/create")
 public class CreateProductController extends HttpServlet {
@@ -38,11 +39,12 @@ public class CreateProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        final int categoryId = Integer.parseInt(req.getParameter("categoryId"));
         final String name = req.getParameter("name");
         final BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
         final int number = Integer.parseInt(req.getParameter("number"));
         final String description = req.getParameter("description");
-        final Product product = new Product(name, price, number, description);
+        final Product product = new Product(categoryId, name, price, number, description);
         log.info("We are trying to create product from controller" + product);
         service.create(product);
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PATH);

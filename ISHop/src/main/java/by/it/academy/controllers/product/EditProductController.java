@@ -42,11 +42,12 @@ public class EditProductController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
+        final int categoryId = Integer.parseInt(req.getParameter("categoryId"));
         final String name = req.getParameter("name");
         final BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
         final int number = Integer.parseInt(req.getParameter("number"));
         final String description = req.getParameter("description");
-        final Product product = new Product(name, price, number, description);
+        final Product product = new Product(categoryId, name, price, number, description);
         product.setId(id);
         log.info("We are trying to update product " + product + " from controller" );
         service.update(product);
