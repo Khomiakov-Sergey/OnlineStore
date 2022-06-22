@@ -47,7 +47,7 @@
         <tr>
             <td align="center">${product.id}</td>
             <td align="center">${product.name}</td>
-            <td align="center">${product.price}$</td>
+            <td align="center">${product.price}</td>
             <td align="center">${product.number}</td>
             <td align="center">${product.description}</td>
             <td align="center"><img src="${pageContext.request.contextPath}/images/${product.id}.jpg"></td>

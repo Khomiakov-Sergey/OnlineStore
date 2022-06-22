@@ -2,39 +2,76 @@ package by.it.academy.services.product;
 
 import by.it.academy.entities.Product;
 import by.it.academy.repositories.product.ProductRepository;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Log4j
 public class ProductApiService implements ProductService<Product> {
     private final ProductRepository<Product> repository;
+    private final Session session;
 
-    public ProductApiService(ProductRepository<Product> products) {
+    public ProductApiService(ProductRepository<Product> products, Session session) {
         this.repository = products;
+        this.session = session;
     }
 
 
     @Override
     public void create(Product product) {
-        repository.create(product);
-
+        try {
+            session.beginTransaction();
+            repository.create(product);
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
     }
 
     @Override
     public void delete(int id) {
-        repository.delete(id);
+        try {
+            session.beginTransaction();
+            repository.delete(id);
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+
+
     }
 
     @Override
     public void update(Product product) {
-        repository.update(product);
-
+        try {
+            session.beginTransaction();
+            repository.update(product);
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
     }
 
     @Override
     public void buy(Product product) {
-        repository.buy(product);
+        try {
+            session.beginTransaction();
+            repository.buy(product);
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+
+
     }
 
     @Override
@@ -45,7 +82,17 @@ public class ProductApiService implements ProductService<Product> {
 
     @Override
     public List<Product> getAllProducts() {
-        return repository.getAllProducts();
+        List<Product> products = new ArrayList<>();
+        try {
+            session.beginTransaction();
+            products = repository.getAllProducts();
+            session.getTransaction().commit();
+
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+        return products;
 
     }
 }

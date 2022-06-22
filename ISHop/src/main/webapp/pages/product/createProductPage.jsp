@@ -24,11 +24,11 @@
         <tr>
             <td>Category</td>
             <td>
-                <select id="categoryId" name="categoryId" required="required">
-                    <option value="1">Iphone</option>
-                    <option value="2">Mac</option>
-                    <option value="3">Ipad</option>
-                    <option value="4">Watch</option>
+                <select id="categoryType" name="categoryType" required="required">
+                    <option value="IPHONE">Iphone</option>
+                    <option value="MAC">Mac</option>
+                    <option value="IPAD">Ipad</option>
+                    <option value="WATCH">Watch</option>
                 </select>
             </td>
         </tr>

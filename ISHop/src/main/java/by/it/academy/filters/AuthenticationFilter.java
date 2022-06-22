@@ -1,7 +1,6 @@
 package by.it.academy.filters;
 
-import by.it.academy.controllers.user.LoginController;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -10,10 +9,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
 
+@Log4j
 @WebFilter(urlPatterns = "/product/buy")
 public class AuthenticationFilter implements Filter {
-
-    private final static Logger log = Logger.getLogger(AuthenticationFilter.class);
 
     private final static String LOGIN_PAGE = "/pages/user/login.jsp";
 

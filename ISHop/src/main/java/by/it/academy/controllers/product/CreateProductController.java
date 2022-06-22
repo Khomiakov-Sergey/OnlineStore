@@ -1,14 +1,14 @@
 package by.it.academy.controllers.product;
 
+import by.it.academy.entities.CategoryType;
 import by.it.academy.entities.Product;
-import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.SQLDBConnection;
+import by.it.academy.repositories.connection.DataSource;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
 import by.it.academy.services.product.ProductApiService;
 import by.it.academy.services.product.ProductService;
-import org.apache.log4j.Logger;
-
+import lombok.extern.log4j.Log4j;
+import org.hibernate.Session;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,18 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 
+@Log4j
 @WebServlet(urlPatterns = "/product/create")
 public class CreateProductController extends HttpServlet {
-    private final DBConnection connection = new SQLDBConnection();
-    private final ProductRepository<Product> repository = new ProductApiRepository(connection);
-    private final ProductService<Product> service = new ProductApiService(repository);
+    private final Session hibernateSession = DataSource.getInstance().getSession();
 
-    private final static String CREATE_PRODUCT_PAGE = "/pages/product/createProductPage.jsp";
-    private final static String PRODUCT_LIST_PATH = "/product/productList";
+    private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
+    private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
-    private final static Logger log = Logger.getLogger(CreateProductController.class);
+    private final static java.lang.String CREATE_PRODUCT_PAGE = "/pages/product/createProductPage.jsp";
+    private final static java.lang.String PRODUCT_LIST_PATH = "/product/productList";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,12 +38,12 @@ public class CreateProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+        final CategoryType categoryType = CategoryType.valueOf(req.getParameter("categoryType"));
         final String name = req.getParameter("name");
         final BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
         final int number = Integer.parseInt(req.getParameter("number"));
         final String description = req.getParameter("description");
-        final Product product = new Product(categoryId, name, price, number, description);
+        final Product product = new Product(categoryType, name, price, number, description);
         log.info("We are trying to create product from controller" + product);
         service.create(product);
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PATH);

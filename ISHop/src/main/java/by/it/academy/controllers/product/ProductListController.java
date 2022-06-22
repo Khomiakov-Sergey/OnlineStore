@@ -1,13 +1,13 @@
 package by.it.academy.controllers.product;
 
 import by.it.academy.entities.Product;
-import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.SQLDBConnection;
+import by.it.academy.repositories.connection.DataSource;
 import by.it.academy.repositories.product.ProductApiRepository;
 import by.it.academy.repositories.product.ProductRepository;
 import by.it.academy.services.product.ProductApiService;
 import by.it.academy.services.product.ProductService;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
+import org.hibernate.Session;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,19 +18,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@Log4j
 @WebServlet(urlPatterns = "/product/productList")
 public class ProductListController extends HttpServlet {
-    private final DBConnection connection = new SQLDBConnection();
-    private final ProductRepository<Product> productDAO = new ProductApiRepository(connection);
-    private final ProductService<Product> service = new ProductApiService(productDAO);
+    private final Session hibernateSession = DataSource.getInstance().getSession();
+
+    private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
+    private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
     private final static String PRODUCT_LIST_PAGE = "/pages/product/productList.jsp";
-
-    private final static Logger log = Logger.getLogger(ProductListController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("We are trying to get productList from controller");
+
         List<Product> productList = service.getAllProducts();
         final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PAGE);
         req.setAttribute("productList", productList);
@@ -41,4 +42,5 @@ public class ProductListController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
+
 }

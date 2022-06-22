@@ -1,13 +1,11 @@
 package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
-import by.it.academy.repositories.connection.DBConnection;
-import by.it.academy.repositories.connection.SQLDBConnection;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
 import by.it.academy.services.user.UserService;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,14 +16,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
+@Log4j
 @WebServlet(urlPatterns = "/user/login")
 public class LoginController extends HttpServlet {
 
-    private final DBConnection connection = new SQLDBConnection();
-    private final UserRepository<User> repository = new UserApiRepository(connection);
+    private final UserRepository<User> repository = new UserApiRepository();
     private final UserService<User> service = new UserApiService(repository);
 
-    private final static Logger log = Logger.getLogger(LoginController.class);
     private final static String LOGIN_PAGE = "/pages/user/login.jsp";
 
     @Override

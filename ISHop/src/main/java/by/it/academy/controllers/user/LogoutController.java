@@ -1,7 +1,7 @@
 package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,10 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Log4j
 @WebServlet(urlPatterns = "/user/logout")
 public class LogoutController extends HttpServlet {
-
-    private final static Logger log = Logger.getLogger(LogoutController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -1,6 +1,7 @@
 package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
+import lombok.extern.log4j.Log4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Log4j
 @WebServlet(urlPatterns = "/user/userInfo")
 public class UserInfoController extends HttpServlet {
 
