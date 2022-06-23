@@ -19,21 +19,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static by.it.academy.utils.Constants.*;
+
 @Log4j
-@WebServlet(urlPatterns = "/product/edit")
+@WebServlet(urlPatterns = PRODUCT_EDIT_PATH)
 public class EditProductController extends HttpServlet {
     private final Session hibernateSession = DataSource.getInstance().getSession();
 
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
-    private final static String EDIT_PRODUCT_PAGE = "/pages/product/editProductPage.jsp";
-    private final static String PRODUCT_LIST_PATH = "/product/productList";
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(EDIT_PRODUCT_PAGE);
-        int id = Integer.parseInt(req.getParameter("id"));
+        RequestDispatcher dispatcher = req.getRequestDispatcher(PRODUCT_EDIT_PAGE);
+        final Long id = Long.parseLong(req.getParameter("id"));
         log.info("We are trying to get product with id" + id + " from controller");
         Product product = service.getProduct(id);
         req.setAttribute("product", product);
@@ -42,7 +41,16 @@ public class EditProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final int id = Integer.parseInt(req.getParameter("id"));
+        final Product product = getProduct(req);
+        log.info("We are trying to update product " + product + " from controller");
+        service.update(product);
+        req.setAttribute("product", product);
+        final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PATH);
+        requestDispatcher.forward(req, resp);
+    }
+
+    private Product getProduct(HttpServletRequest req) {
+        final long id = Long.parseLong(req.getParameter("id"));
         final CategoryType categoryType = CategoryType.valueOf(req.getParameter("categoryType"));
         final String name = req.getParameter("name");
         final BigDecimal price = BigDecimal.valueOf(Double.parseDouble(req.getParameter("price")));
@@ -50,10 +58,6 @@ public class EditProductController extends HttpServlet {
         final String description = req.getParameter("description");
         final Product product = new Product(categoryType, name, price, number, description);
         product.setId(id);
-        log.info("We are trying to update product " + product + " from controller");
-        service.update(product);
-        req.setAttribute("product", product);
-        final RequestDispatcher requestDispatcher = req.getRequestDispatcher(PRODUCT_LIST_PATH);
-        requestDispatcher.forward(req, resp);
+        return product;
     }
 }

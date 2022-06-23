@@ -1,11 +1,13 @@
 package by.it.academy.controllers.user;
 
 import by.it.academy.entities.User;
+import by.it.academy.repositories.connection.DataSource;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
 import by.it.academy.services.user.UserService;
 import lombok.extern.log4j.Log4j;
+import org.hibernate.Session;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,19 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.it.academy.utils.Constants.*;
+
 @Log4j
-@WebServlet(urlPatterns = "/user/registration")
+@WebServlet(urlPatterns = USER_REGISTRATION_PATH)
 public class RegistrationUserController extends HttpServlet {
 
-    private final UserRepository<User> repository = new UserApiRepository();
-    private final UserService<User> service = new UserApiService(repository);
+    private final Session hibernateSession = DataSource.getInstance().getSession();
 
-    private final static String CREATE_USER_PAGE = "/pages/user/registrationUserPage.jsp";
-    private final static String USER_INFO_PATH = "/user/userInfo";
+    private final UserRepository<User> repository = new UserApiRepository(hibernateSession);
+    private final UserService<User> service = new UserApiService(repository, hibernateSession);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(CREATE_USER_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(USER_REGISTRATION_PAGE);
         dispatcher.forward(req, resp);
     }
 

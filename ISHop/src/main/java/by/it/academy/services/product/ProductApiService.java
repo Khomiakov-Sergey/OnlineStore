@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,7 +34,7 @@ public class ProductApiService implements ProductService<Product> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         try {
             session.beginTransaction();
             repository.delete(id);
@@ -75,7 +74,7 @@ public class ProductApiService implements ProductService<Product> {
     }
 
     @Override
-    public Product getProduct(int id) {
+    public Product getProduct(Long id) {
         return repository.getProduct(id)
                 .orElseThrow(() -> new NoSuchElementException("Product with id " + id + " is not exists"));
     }

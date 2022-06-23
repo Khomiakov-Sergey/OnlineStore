@@ -1,17 +1,17 @@
 package by.it.academy.repositories.user;
 
-import java.sql.SQLException;
+import by.it.academy.entities.User;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface UserRepository<T> {
 
-    void create(T user) ;
+    void create(T user);
 
-    void delete(int id) throws SQLException, ClassNotFoundException;
+    void delete(int id);
 
-    void update(int id, String firstName, String secondName, int ager, Map<String, String> credentials);
+    void update(User user);
 
     Optional<T> getUser(String name, String password);
 

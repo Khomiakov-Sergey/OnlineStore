@@ -1,12 +1,14 @@
 package by.it.academy.entities;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 @NoArgsConstructor
 @ToString(exclude = "orders")
 @EqualsAndHashCode(exclude = "orders")
@@ -15,9 +17,10 @@ import java.util.List;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_seq")
+    @SequenceGenerator(name = "products_seq", sequenceName = "SEQ_PRODUCT", allocationSize = 10)
     @Column(name = "PRODUCT_ID")
-    private int id;
+    private Long id;
 
     @Column(name = "CATEGORY_TYPE")
     @Enumerated(EnumType.STRING)

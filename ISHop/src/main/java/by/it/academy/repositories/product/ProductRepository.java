@@ -8,13 +8,13 @@ import java.util.Optional;
 public interface ProductRepository<T> {
     void create(T product);
 
-    void delete(int id);
+    void delete(Long id);
 
     void update(T product);
 
     void buy(T product);
 
-    Optional<T> getProduct(int id);
+    Optional<T> getProduct(Long id);
 
     List<Product> getAllProducts();
 }

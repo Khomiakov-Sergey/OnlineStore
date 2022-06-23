@@ -18,15 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static by.it.academy.utils.Constants.PRODUCT_LIST_PAGE;
+import static by.it.academy.utils.Constants.PRODUCT_LIST_PATH;
+
 @Log4j
-@WebServlet(urlPatterns = "/product/productList")
+@WebServlet(urlPatterns = PRODUCT_LIST_PATH)
 public class ProductListController extends HttpServlet {
     private final Session hibernateSession = DataSource.getInstance().getSession();
 
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
-
-    private final static String PRODUCT_LIST_PAGE = "/pages/product/productList.jsp";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

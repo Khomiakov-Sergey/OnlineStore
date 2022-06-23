@@ -31,7 +31,34 @@ Age: ${user.age } <br/>
         <a href="${pageContext.request.contextPath}/user/logout">Logout</a>
     </td>
 </tr>
-
+<c:choose>
+    <c:when test="${sessionScope.userType == 'USER'}">
+        <h3 align="center">Your order list</h3>
+        <table class="table table-bordered">
+            <thead align="center">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">Product</th>
+                <th scope="col">Total cost</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Date</th>
+                <th scope="col">Image</th>
+            </tr>
+            </thead>
+            <c:forEach items="${orderList}" var="order">
+                <c:set var="product" value='${order.product}'/>
+                <tr>
+                    <td align="center">${order.id}</td>
+                    <td align="center">${product.name}</td>
+                    <td align="center">${order.totalCost}</td>
+                    <td align="center">${order.orderQuantity}</td>
+                    <td align="center">${order.orderTime}</td>
+                    <td align="center"><img src="${pageContext.request.contextPath}/images/${product.id}.jpg"></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:when>
+</c:choose>
 <c:import url="/pages/fragments/footer.jsp"/>
 
 </body>

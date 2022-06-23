@@ -9,11 +9,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
 
-@Log4j
-@WebFilter(urlPatterns = "/product/buy")
-public class AuthenticationFilter implements Filter {
+import static by.it.academy.utils.Constants.LOGIN_PAGE;
+import static by.it.academy.utils.Constants.PRODUCT_BUY_PATH;
 
-    private final static String LOGIN_PAGE = "/pages/user/login.jsp";
+@Log4j
+@WebFilter(urlPatterns = PRODUCT_BUY_PATH)
+public class AuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {

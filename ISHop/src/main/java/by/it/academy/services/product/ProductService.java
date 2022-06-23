@@ -5,13 +5,13 @@ import java.util.List;
 public interface ProductService<T> {
     void create(T product);
 
-    void delete(int id);
+    void delete(Long id);
 
     void update(T product);
 
     void buy(T product);
 
-    T getProduct(int id);
+    T getProduct(Long id);
 
     List<T> getAllProducts();
 

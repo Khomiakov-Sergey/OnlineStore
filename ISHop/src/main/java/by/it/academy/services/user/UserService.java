@@ -1,17 +1,18 @@
 package by.it.academy.services.user;
 
-import java.sql.SQLException;
+import by.it.academy.entities.User;
+
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService<T> {
     void create(T user);
 
-    void delete(int id) throws SQLException, ClassNotFoundException;
+    void delete(Long id);
 
-    void update(int id, String firstName, String secondName, int age, String login, String password);
+    void update(User user);
 
     Optional<T> getUser(String login, String password);
 
-    List<T> getAllUsers() throws SQLException, ClassNotFoundException;
+    List<T> getAllUsers();
 }

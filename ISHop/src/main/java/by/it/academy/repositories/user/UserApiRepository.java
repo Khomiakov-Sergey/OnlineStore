@@ -1,34 +1,34 @@
 package by.it.academy.repositories.user;
 
 import by.it.academy.entities.User;
-import by.it.academy.repositories.connection.DataSource;
-import lombok.extern.log4j.Log4j;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import java.sql.SQLException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 public class UserApiRepository implements UserRepository<User> {
 
+    private final Session session;
+
+    public UserApiRepository(Session session) {
+        this.session = session;
+    }
+
     @Override
     public void create(User user) {
-        Session session = DataSource.getInstance().getSession();
-        session.beginTransaction();
-        session.persist(user);
-        session.getTransaction().commit();
-        session.close();
+        session.save(user);
     }
 
     @Override
-    public void delete(int id) throws SQLException, ClassNotFoundException {
+    public void delete(int id) {
     }
 
     @Override
-    public void update(int id, String firstName, String secondName, int ager, Map<String, String> credentials) {
+    public void update(User user) {
     }
 
     @Override
@@ -40,10 +40,10 @@ public class UserApiRepository implements UserRepository<User> {
 
     @Override
     public List<User> getAllUsers() {
-        Session session = DataSource.getInstance().getSession();
-        session.beginTransaction();
-        List<User> users = session.createQuery("from User ").list();
-        session.close();
-        return users;
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<User> userQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot = userQuery.from(User.class);
+        userQuery.select(userRoot);
+        return session.createQuery(userQuery).getResultList();
     }
 }

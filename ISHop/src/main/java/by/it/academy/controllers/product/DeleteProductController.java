@@ -15,8 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.it.academy.utils.Constants.PRODUCT_DELETE_PATH;
+
 @Log4j
-@WebServlet(urlPatterns = "/product/delete")
+@WebServlet(urlPatterns = PRODUCT_DELETE_PATH)
 public class DeleteProductController extends HttpServlet {
     private final Session hibernateSession = DataSource.getInstance().getSession();
 
@@ -26,7 +28,7 @@ public class DeleteProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        final int id = Integer.parseInt(req.getParameter("id"));
+        final long id = Long.parseLong(req.getParameter("id"));
         log.info("We are trying to delete product with id" + id + " from controller");
         service.delete(id);
         resp.sendRedirect(req.getContextPath() + "/product/productList");

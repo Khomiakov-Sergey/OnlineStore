@@ -7,7 +7,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Log4j
 public class OrderApiService implements OrderService<Order> {
@@ -45,14 +47,38 @@ public class OrderApiService implements OrderService<Order> {
     }
 
     @Override
-    @Transactional
-    public Order getOrder(int id) {
-        return null;
+    public Order getOrder(Long id) {
+        return repository.getOrder(id)
+                .orElseThrow(() -> new NoSuchElementException("Order with id " + id + " is not exists"));
     }
 
     @Override
-    @Transactional
     public List<Order> getAllOrders() {
-        return null;
+        List<Order> orders = new ArrayList<>();
+        try {
+            session.beginTransaction();
+            orders = repository.getAllOrders();
+            session.getTransaction().commit();
+
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+        return orders;
+    }
+
+    @Override
+    public List<Order> getAllOrdersByUserId(Long id) {
+        List<Order> ordersForCurrentUser = new ArrayList<>();
+        try {
+            session.beginTransaction();
+            ordersForCurrentUser = repository.getAllOrdersByUserId(id);
+            session.getTransaction().commit();
+
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+        return ordersForCurrentUser;
     }
 }

@@ -1,18 +1,19 @@
 package by.it.academy.repositories.order;
 
 import by.it.academy.entities.Order;
-import by.it.academy.entities.Product;
-import by.it.academy.repositories.connection.DataSource;
 import lombok.extern.log4j.Log4j;
 import org.hibernate.Session;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
 @Log4j
-public class OrderApiRepository implements OrderRepository<Order>{
+public class OrderApiRepository implements OrderRepository<Order> {
 
-    private  final Session session;
+    private final Session session;
 
     public OrderApiRepository(Session session) {
         this.session = session;
@@ -21,7 +22,7 @@ public class OrderApiRepository implements OrderRepository<Order>{
 
     @Override
     public void create(Order order) {
-            session.persist(order);
+        session.persist(order);
     }
 
     @Override
@@ -35,12 +36,27 @@ public class OrderApiRepository implements OrderRepository<Order>{
     }
 
     @Override
-    public Optional<Order> getOrder(int id) {
-        return Optional.empty();
+    public Optional<Order> getOrder(Long id) {
+        return getAllOrders()
+                .stream().filter(order -> order.getId() == (id))
+                .findFirst();
     }
 
     @Override
-    public List<Product> getAllOrders() {
-        return null;
+    public List<Order> getAllOrders() {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> orderQuery = criteriaBuilder.createQuery(Order.class);
+        Root<Order> orderRoot = orderQuery.from(Order.class);
+        orderQuery.select(orderRoot);
+        return session.createQuery(orderQuery).getResultList();
+    }
+
+    @Override
+    public List<Order> getAllOrdersByUserId(Long id) {
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> orderQuery = criteriaBuilder.createQuery(Order.class);
+        Root<Order> orderRoot = orderQuery.from(Order.class);
+        orderQuery.select(orderRoot).where(criteriaBuilder.equal(orderRoot.get("user"), id));
+        return session.createQuery(orderQuery).getResultList();
     }
 }

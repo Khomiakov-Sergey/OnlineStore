@@ -19,20 +19,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+import static by.it.academy.utils.Constants.*;
+
 @Log4j
-@WebServlet(urlPatterns = "/product/create")
+@WebServlet(urlPatterns = PRODUCT_CREATE_PATH)
 public class CreateProductController extends HttpServlet {
     private final Session hibernateSession = DataSource.getInstance().getSession();
 
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
-    private final static java.lang.String CREATE_PRODUCT_PAGE = "/pages/product/createProductPage.jsp";
-    private final static java.lang.String PRODUCT_LIST_PATH = "/product/productList";
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher dispatcher = req.getRequestDispatcher(CREATE_PRODUCT_PAGE);
+        RequestDispatcher dispatcher = req.getRequestDispatcher(PRODUCT_CREATE_PAGE);
         dispatcher.forward(req, resp);
     }
 

@@ -2,12 +2,14 @@ package by.it.academy.filters;
 
 
 import by.it.academy.entities.User;
+import by.it.academy.repositories.connection.DataSource;
 import by.it.academy.repositories.user.UserApiRepository;
 import by.it.academy.repositories.user.UserRepository;
 import by.it.academy.services.user.UserApiService;
 import by.it.academy.services.user.UserService;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
+import org.hibernate.Session;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -15,14 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
+import static by.it.academy.utils.Constants.LOGIN_PAGE;
+import static by.it.academy.utils.Constants.USER_REGISTRATION_PATH;
+
 @Log4j
-@WebFilter(urlPatterns = "/user/registration")
+@WebFilter(urlPatterns = USER_REGISTRATION_PATH)
 public class UniqLoginFilter implements Filter {
 
-    private final static String LOGIN_PAGE = "/pages/user/login.jsp";
+    private final Session hibernateSession = DataSource.getInstance().getSession();
 
-    private final UserRepository<User> repository = new UserApiRepository();
-    private final UserService<User> service = new UserApiService(repository);
+    private final UserRepository<User> repository = new UserApiRepository(hibernateSession);
+    private final UserService<User> service = new UserApiService(repository, hibernateSession);
 
     @Override
     public void init(FilterConfig filterConfig) {

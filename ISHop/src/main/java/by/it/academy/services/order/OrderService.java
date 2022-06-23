@@ -9,8 +9,10 @@ public interface OrderService<T> {
 
     void update(T order);
 
-    T getOrder(int id);
+    T getOrder(Long id);
 
     List<T> getAllOrders();
+
+    List<T> getAllOrdersByUserId(Long id);
 
 }

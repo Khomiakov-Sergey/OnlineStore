@@ -2,30 +2,43 @@ package by.it.academy.services.user;
 
 import by.it.academy.entities.User;
 import by.it.academy.repositories.user.UserRepository;
+import lombok.extern.log4j.Log4j;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j
 public class UserApiService implements UserService<User> {
     private final UserRepository<User> repository;
+    private final Session session;
 
-    public UserApiService(UserRepository<User> repository) {
+    public UserApiService(UserRepository<User> repository, Session session) {
         this.repository = repository;
+        this.session = session;
     }
 
     @Override
     public void create(User user) {
-        repository.create(user);
+        try {
+            session.beginTransaction();
+            repository.create(user);
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
 
     }
 
     @Override
-    public void delete(int id) throws SQLException, ClassNotFoundException {
+    public void delete(Long id) {
     }
 
     @Override
-    public void update(int id, String firstName, String secondName, int age, String login, String password) {
+    public void update(User User) {
     }
 
     @Override
@@ -35,6 +48,18 @@ public class UserApiService implements UserService<User> {
 
     @Override
     public List<User> getAllUsers() {
-        return repository.getAllUsers();
+        List<User> users = new ArrayList<>();
+        try {
+            session.beginTransaction();
+            users = repository.getAllUsers();
+            session.getTransaction().commit();
+        } catch (HibernateException ex) {
+            log.info(ex);
+            session.getTransaction().rollback();
+        }
+        return users;
+
     }
+
+
 }

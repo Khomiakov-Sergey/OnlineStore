@@ -21,11 +21,11 @@ public class DataSource {
         return instance;
     }
 
-    public EntityManager getEntityManager(){
+    public EntityManager getEntityManager() {
         return entityManagerFactory.createEntityManager();
     }
 
-    public Session getSession(){
+    public Session getSession() {
         return getEntityManager().unwrap(Session.class);
     }
 }

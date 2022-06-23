@@ -10,11 +10,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Objects;
 
-@Log4j
-@WebFilter(urlPatterns = {"/product/update", "/product/create", "/product/delete"})
-public class AuthorizationFilter implements Filter {
+import static by.it.academy.utils.Constants.*;
 
-    private final static String LOGIN_PAGE = "/pages/user/login.jsp";
+@Log4j
+@WebFilter(urlPatterns = {PRODUCT_EDIT_PATH, PRODUCT_CREATE_PATH, PRODUCT_DELETE_PATH})
+public class AuthorizationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {

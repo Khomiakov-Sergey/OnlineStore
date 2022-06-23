@@ -24,36 +24,36 @@ public class ProductApiRepository implements ProductRepository<Product> {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
         Product product = session.get(Product.class, id);
         session.delete(product);
     }
 
     @Override
     public void update(Product product) {
-        int id = product.getId();
+        Long id = product.getId();
         Product updateProduct = session.get(Product.class, id);
-        updateProduct.setCategoryType(product.getCategoryType());
-        updateProduct.setName(product.getName());
-        updateProduct.setPrice(product.getPrice());
-        updateProduct.setNumber(product.getNumber());
-        updateProduct.setDescription(product.getDescription());
+        updateProduct
+                .setCategoryType(product.getCategoryType())
+                .setName(product.getName())
+                .setPrice(product.getPrice())
+                .setNumber(product.getNumber())
+                .setDescription(product.getDescription());
         session.update(updateProduct);
-
     }
-
 
     @Override
     public void buy(Product product) {
-        int id = product.getId();
+        Long id = product.getId();
         Product updateProduct = session.get(Product.class, id);
-        updateProduct.setNumber(product.getNumber());
+        updateProduct
+                .setNumber(product.getNumber());
         session.update(updateProduct);
 
     }
 
     @Override
-    public Optional<Product> getProduct(int id) {
+    public Optional<Product> getProduct(Long id) {
         return getAllProducts()
                 .stream().filter(product -> product.getId() == (id))
                 .findFirst();
@@ -62,9 +62,9 @@ public class ProductApiRepository implements ProductRepository<Product> {
     @Override
     public List<Product> getAllProducts() {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaQuery<Product> query = criteriaBuilder.createQuery(Product.class);
-        Root<Product> productRoot = query.from(Product.class);
-        query.select(productRoot);
-        return session.createQuery(query).getResultList();
+        CriteriaQuery<Product> productQuery = criteriaBuilder.createQuery(Product.class);
+        Root<Product> productRoot = productQuery.from(Product.class);
+        productQuery.select(productRoot);
+        return session.createQuery(productQuery).getResultList();
     }
 }
