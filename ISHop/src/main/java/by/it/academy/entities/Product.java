@@ -19,23 +19,23 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_seq")
     @SequenceGenerator(name = "products_seq", sequenceName = "SEQ_PRODUCT", allocationSize = 10)
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "PRODUCT_ID", nullable = false)
     private Long id;
 
-    @Column(name = "CATEGORY_TYPE")
+    @Column(name = "CATEGORY_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
-    @Column(name = "PRICE")
+    @Column(name = "PRICE", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "NUMBER")
+    @Column(name = "NUMBER", nullable = false)
     private int number;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "product")

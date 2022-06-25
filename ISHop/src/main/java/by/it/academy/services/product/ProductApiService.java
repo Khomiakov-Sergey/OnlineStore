@@ -39,7 +39,7 @@ public class ProductApiService implements ProductService<Product> {
             session.beginTransaction();
             repository.delete(id);
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -53,7 +53,7 @@ public class ProductApiService implements ProductService<Product> {
             session.beginTransaction();
             repository.update(product);
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -65,7 +65,7 @@ public class ProductApiService implements ProductService<Product> {
             session.beginTransaction();
             repository.buy(product);
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -87,7 +87,7 @@ public class ProductApiService implements ProductService<Product> {
             products = repository.getAllProducts();
             session.getTransaction().commit();
 
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }

@@ -26,7 +26,7 @@ public class UserApiService implements UserService<User> {
             session.beginTransaction();
             repository.create(user);
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -53,7 +53,7 @@ public class UserApiService implements UserService<User> {
             session.beginTransaction();
             users = repository.getAllUsers();
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }

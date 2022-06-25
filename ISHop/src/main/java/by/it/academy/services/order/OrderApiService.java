@@ -28,7 +28,7 @@ public class OrderApiService implements OrderService<Order> {
             session.beginTransaction();
             repository.create(order);
             session.getTransaction().commit();
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -60,7 +60,7 @@ public class OrderApiService implements OrderService<Order> {
             orders = repository.getAllOrders();
             session.getTransaction().commit();
 
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
@@ -75,7 +75,7 @@ public class OrderApiService implements OrderService<Order> {
             ordersForCurrentUser = repository.getAllOrdersByUserId(id);
             session.getTransaction().commit();
 
-        } catch (HibernateException ex) {
+        } catch (Exception ex) {
             log.info(ex);
             session.getTransaction().rollback();
         }
