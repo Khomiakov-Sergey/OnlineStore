@@ -36,7 +36,7 @@ public class UserApiRepository implements UserRepository<User> {
     }
 
     /**
-     * This method updates product using by hibernate. The method is not implemented.
+     * This method updates user using by hibernate. The method is not implemented.
      */
     @Override
     public void update(User user) {
