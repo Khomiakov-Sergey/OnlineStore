@@ -19,6 +19,10 @@ import java.io.IOException;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for registration user.
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = USER_REGISTRATION_PATH)
 public class RegistrationUserController extends HttpServlet {
@@ -28,12 +32,18 @@ public class RegistrationUserController extends HttpServlet {
     private final UserRepository<User> repository = new UserApiRepository(hibernateSession);
     private final UserService<User> service = new UserApiService(repository, hibernateSession);
 
+    /**
+     * This method sends the user to the user registration page
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher(USER_REGISTRATION_PAGE);
         dispatcher.forward(req, resp);
     }
 
+    /**
+     * This method gets the user from the request and sends it to the service layer for creating a new user.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String firstName = req.getParameter("firstName");

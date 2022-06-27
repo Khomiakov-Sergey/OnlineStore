@@ -28,6 +28,10 @@ import java.math.BigDecimal;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for purchasing the product (only for role USER).
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = PRODUCT_BUY_PATH)
 
@@ -41,9 +45,10 @@ public class BuyProductController extends HttpServlet {
     private final OrderRepository<Order> orderRepository = new OrderApiRepository(hibernateSession);
     private final OrderService<Order> orderService = new OrderApiService(orderRepository, hibernateSession);
 
-
+    /**
+     * This method gets the id from the request, gets the product by id and sends the customer to the purchase page
+     */
     @Override
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher(PRODUCT_BUY_PAGE);
         long id = Integer.parseInt(req.getParameter("id"));
@@ -52,8 +57,12 @@ public class BuyProductController extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
+    /**
+     * This method gets the product from the request, checks user and generates order for service layer.
+     * If it all was success, customer is transferred to the order success page, else he is transferred
+     * to the order fail page.
+     */
     @Override
-
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final long id = Long.parseLong(req.getParameter("id"));
         final CategoryType categoryType = CategoryType.valueOf(req.getParameter("categoryType"));

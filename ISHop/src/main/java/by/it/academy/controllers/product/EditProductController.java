@@ -21,6 +21,10 @@ import java.math.BigDecimal;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for edit the product (only for role ADMIN).
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = PRODUCT_EDIT_PATH)
 public class EditProductController extends HttpServlet {
@@ -29,6 +33,10 @@ public class EditProductController extends HttpServlet {
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
+    /**
+     * This method gets the product id from the request, get product from service layer by using this id and
+     * transferred it to the doPost method.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher(PRODUCT_EDIT_PAGE);
@@ -39,6 +47,9 @@ public class EditProductController extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
+    /**
+     * This method gets the product from the request and sends it to the service layer for edit the product.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final Product product = getProduct(req);
@@ -49,6 +60,9 @@ public class EditProductController extends HttpServlet {
         requestDispatcher.forward(req, resp);
     }
 
+    /**
+     * This local method gets the product from the request.
+     */
     private Product getProduct(HttpServletRequest req) {
         final long id = Long.parseLong(req.getParameter("id"));
         final CategoryType categoryType = CategoryType.valueOf(req.getParameter("categoryType"));

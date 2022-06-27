@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * This service class is responsible for transferred product information from controllers to repository layer.
+ * It contains business logic and opens transaction for working in session.
+ */
 @Log4j
 public class ProductApiService implements ProductService<Product> {
     private final ProductRepository<Product> repository;
@@ -20,7 +24,10 @@ public class ProductApiService implements ProductService<Product> {
         this.session = session;
     }
 
-
+    /**
+     * This method opens transaction, gets the user from the parameter and sends it to the repository layer for
+     * creating a new product. After that transaction will be commited.
+     */
     @Override
     public void create(Product product) {
         try {
@@ -33,6 +40,10 @@ public class ProductApiService implements ProductService<Product> {
         }
     }
 
+    /**
+     * This method opens transaction, gets the product id from the parameter and sends it to the repository layer for
+     * deleting the product. After that transaction will be commited. The method is not implemented.
+     */
     @Override
     public void delete(Long id) {
         try {
@@ -43,10 +54,12 @@ public class ProductApiService implements ProductService<Product> {
             log.info(ex);
             session.getTransaction().rollback();
         }
-
-
     }
 
+    /**
+     * This method opens transaction, gets the product from the parameter and sends it to the repository layer for
+     * updating the product. After that transaction will be commited.
+     */
     @Override
     public void update(Product product) {
         try {
@@ -59,6 +72,10 @@ public class ProductApiService implements ProductService<Product> {
         }
     }
 
+    /**
+     * This method opens transaction, gets the product from the parameter and sends it to the repository layer for
+     * buying the product. After that transaction will be commited.
+     */
     @Override
     public void buy(Product product) {
         try {
@@ -69,16 +86,22 @@ public class ProductApiService implements ProductService<Product> {
             log.info(ex);
             session.getTransaction().rollback();
         }
-
-
     }
 
+    /**
+     * This method gets the product id from the parameter and sends it to the repository layer for searching the product.
+     * @return Product
+     */
     @Override
     public Product getProduct(Long id) {
         return repository.getProduct(id)
                 .orElseThrow(() -> new NoSuchElementException("Product with id " + id + " is not exists"));
     }
 
+    /**
+     * This method opens transaction, gets all products from repository layer. After that transaction will be commited.
+     * @return list of products
+     */
     @Override
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();

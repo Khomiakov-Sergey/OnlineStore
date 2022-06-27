@@ -5,7 +5,7 @@ import java.util.List;
 public interface OrderService<T> {
     void create(T order);
 
-    void delete(int id);
+    void delete(Long id);
 
     void update(T order);
 

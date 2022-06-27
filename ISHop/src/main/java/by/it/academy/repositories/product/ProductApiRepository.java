@@ -10,6 +10,9 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This repository class is responsible for transferred product information from services to DB using by hibernate.
+ */
 @Log4j
 public class ProductApiRepository implements ProductRepository<Product> {
     private final Session session;
@@ -18,17 +21,26 @@ public class ProductApiRepository implements ProductRepository<Product> {
         this.session = session;
     }
 
+    /**
+     * This method persists product using by hibernate.
+     */
     @Override
     public void create(Product product) {
-        session.save(product);
+        session.persist(product);
     }
 
+    /**
+     * This method deletes product using by hibernate.
+     */
     @Override
     public void delete(Long id) {
         Product product = session.get(Product.class, id);
         session.delete(product);
     }
 
+    /**
+     * This method updates product using by hibernate.
+     */
     @Override
     public void update(Product product) {
         Long id = product.getId();
@@ -42,6 +54,9 @@ public class ProductApiRepository implements ProductRepository<Product> {
         session.update(updateProduct);
     }
 
+    /**
+     * This method buys product using by hibernate.
+     */
     @Override
     public void buy(Product product) {
         Long id = product.getId();
@@ -52,6 +67,10 @@ public class ProductApiRepository implements ProductRepository<Product> {
 
     }
 
+    /**
+     * This method gets product using by hibernate and streams.
+     * @return Optional<Product>
+     */
     @Override
     public Optional<Product> getProduct(Long id) {
         return getAllProducts()
@@ -59,6 +78,10 @@ public class ProductApiRepository implements ProductRepository<Product> {
                 .findFirst();
     }
 
+    /**
+     * This method gets all products using by criteria and hibernate.
+     * @return list of products
+     */
     @Override
     public List<Product> getAllProducts() {
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

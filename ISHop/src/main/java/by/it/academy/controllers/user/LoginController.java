@@ -20,6 +20,10 @@ import java.util.Optional;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for login user.
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = USER_LOGIN_PATH)
 public class LoginController extends HttpServlet {
@@ -29,11 +33,19 @@ public class LoginController extends HttpServlet {
     private final UserRepository<User> repository = new UserApiRepository(hibernateSession);
     private final UserService<User> service = new UserApiService(repository, hibernateSession);
 
+    /**
+     * This method gets the id from the request, gets the product by id and sends the customer to the purchase page
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
     }
 
+    /**
+     * This method gets the login and password from the request, checks the users is existed using by service layer
+     * and if this user is really existed, than open new session. Else, user will be redirected to the login page
+     * with description what kind of mistakes it was.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");

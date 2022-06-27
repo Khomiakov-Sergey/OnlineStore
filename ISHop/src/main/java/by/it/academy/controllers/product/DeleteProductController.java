@@ -17,6 +17,10 @@ import java.io.IOException;
 
 import static by.it.academy.utils.Constants.PRODUCT_DELETE_PATH;
 
+/**
+ * This controller class is responsible for delete the product (only for role ADMIN).
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = PRODUCT_DELETE_PATH)
 public class DeleteProductController extends HttpServlet {
@@ -25,7 +29,9 @@ public class DeleteProductController extends HttpServlet {
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
-
+    /**
+     * This method gets the product id from the request and sends it to the service layer for deleting the product.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final long id = Long.parseLong(req.getParameter("id"));
@@ -34,6 +40,9 @@ public class DeleteProductController extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/product/productList");
     }
 
+    /**
+     * This method redirect user to the doGet method.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doGet(req, resp);

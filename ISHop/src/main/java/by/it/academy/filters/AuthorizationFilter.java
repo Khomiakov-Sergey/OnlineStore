@@ -12,14 +12,24 @@ import java.util.Objects;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This filter class is responsible for filtering users. User with role ADMIN gets access to some new feature.
+ */
 @Log4j
 @WebFilter(urlPatterns = {PRODUCT_EDIT_PATH, PRODUCT_CREATE_PATH, PRODUCT_DELETE_PATH})
 public class AuthorizationFilter implements Filter {
 
+    /**
+     * This method init filter.
+     */
     @Override
     public void init(FilterConfig filterConfig) {
     }
 
+    /**
+     * This method checks session and user. And user role equal ADMIN, user get some options to change product,
+     * like edit, create and delete product.
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
@@ -41,6 +51,9 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
+    /**
+     * This method destroy filter.
+     */
     @Override
     public void destroy() {
     }

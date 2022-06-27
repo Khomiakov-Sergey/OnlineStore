@@ -1,17 +1,18 @@
 package by.it.academy.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * This class is responsible for entity User.
+ */
 @Data
-@NoArgsConstructor
 @Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = "orders")
 @EqualsAndHashCode(exclude = "orders")
 @Entity

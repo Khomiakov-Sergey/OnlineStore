@@ -7,9 +7,13 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * This class is responsible for entity Product.
+ */
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString(exclude = "orders")
 @EqualsAndHashCode(exclude = "orders")
 @Entity

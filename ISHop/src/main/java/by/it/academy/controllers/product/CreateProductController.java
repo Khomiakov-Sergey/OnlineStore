@@ -21,6 +21,10 @@ import java.math.BigDecimal;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for create the product (only for role ADMIN).
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = PRODUCT_CREATE_PATH)
 public class CreateProductController extends HttpServlet {
@@ -29,12 +33,18 @@ public class CreateProductController extends HttpServlet {
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
+    /**
+     * This method sends the user to the product create page
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher dispatcher = req.getRequestDispatcher(PRODUCT_CREATE_PAGE);
         dispatcher.forward(req, resp);
     }
 
+    /**
+     * This method gets the product from the request and sends it to the service layer for creating a new product.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final CategoryType categoryType = CategoryType.valueOf(req.getParameter("categoryType"));

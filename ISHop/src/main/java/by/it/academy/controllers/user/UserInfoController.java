@@ -22,6 +22,10 @@ import java.util.List;
 
 import static by.it.academy.utils.Constants.*;
 
+/**
+ * This controller class is responsible for displaying user information and orders, which he did.
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = USER_INFO_PATH)
 public class UserInfoController extends HttpServlet {
@@ -48,6 +52,9 @@ public class UserInfoController extends HttpServlet {
         requestDispatcher.forward(req, resp);
     }
 
+    /**
+     * This method redirect user to the doGet method.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);

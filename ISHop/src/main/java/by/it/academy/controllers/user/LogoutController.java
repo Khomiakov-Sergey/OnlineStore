@@ -14,10 +14,17 @@ import java.io.IOException;
 import static by.it.academy.utils.Constants.LOGIN_PAGE;
 import static by.it.academy.utils.Constants.USER_LOGOUT_PATH;
 
+/**
+ * This controller class is responsible for logout user.
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = USER_LOGOUT_PATH)
 public class LogoutController extends HttpServlet {
 
+    /**
+     * This method gets the user from the request, if the session open for this user so session will be invalidated.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -29,6 +36,9 @@ public class LogoutController extends HttpServlet {
         req.getRequestDispatcher(LOGIN_PAGE).forward(req, resp);
     }
 
+    /**
+     * This method redirect user to the doGet method.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);

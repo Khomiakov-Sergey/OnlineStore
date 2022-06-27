@@ -21,6 +21,10 @@ import java.util.List;
 import static by.it.academy.utils.Constants.PRODUCT_LIST_PAGE;
 import static by.it.academy.utils.Constants.PRODUCT_LIST_PATH;
 
+/**
+ * This controller class is responsible for display a list of products.
+ * It is an intermediate layer between view and service.
+ */
 @Log4j
 @WebServlet(urlPatterns = PRODUCT_LIST_PATH)
 public class ProductListController extends HttpServlet {
@@ -29,6 +33,10 @@ public class ProductListController extends HttpServlet {
     private final ProductRepository<Product> repository = new ProductApiRepository(hibernateSession);
     private final ProductService<Product> service = new ProductApiService(repository, hibernateSession);
 
+    /**
+     * This method gets the product list using by service layer and sends it to the product list page with add
+     * list to the request.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.info("We are trying to get productList from controller");
@@ -39,6 +47,9 @@ public class ProductListController extends HttpServlet {
         requestDispatcher.forward(req, resp);
     }
 
+    /**
+     * This method redirect user to the doGet method.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
