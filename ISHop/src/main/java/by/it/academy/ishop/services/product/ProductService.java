@@ -1,6 +1,6 @@
 package by.it.academy.ishop.services.product;
 
-import by.it.academy.ishop.dtos.requests.RegistrationProductRequest;
+import by.it.academy.ishop.dtos.requests.ProductDto;
 import by.it.academy.ishop.entities.product.Category;
 import by.it.academy.ishop.entities.product.Product;
 import by.it.academy.ishop.entities.user.User;
@@ -8,15 +8,15 @@ import by.it.academy.ishop.entities.user.User;
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<ProductDto> getAllProducts();
 
-    List<Product> getAllProductsByCategory(Category category);
+    List<ProductDto> getAllProductsByCategory(Category category);
 
-    Product getProduct(Long id);
+    ProductDto getProduct(Long id);
 
-    Long updateProduct(User user);
+    Long updateProduct(Long id, ProductDto productDto);
 
-    Long createProduct(RegistrationProductRequest registrationProductRequest);
+    Long createProduct(ProductDto productDto);
 
     void deleteProduct(Long id);
 }

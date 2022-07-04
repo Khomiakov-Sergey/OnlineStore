@@ -1,9 +1,11 @@
 package by.it.academy.ishop.services.user;
 
-import by.it.academy.ishop.dtos.requests.RegistrationUserRequest;
+import by.it.academy.ishop.dtos.requests.LoginRequest;
+import by.it.academy.ishop.dtos.requests.UserDto;
 import by.it.academy.ishop.entities.user.Role;
 import by.it.academy.ishop.entities.user.Status;
 import by.it.academy.ishop.entities.user.User;
+import by.it.academy.ishop.mappers.UserMapper;
 import by.it.academy.ishop.repositories.user.UserRepository;
 import by.it.academy.ishop.repositories.user.UserRoleRepository;
 import by.it.academy.ishop.repositories.user.UserStatusRepository;
@@ -12,6 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,10 +27,21 @@ public class UserApiService implements UserService {
     private final UserStatusRepository userStatusRepository;
     private final UserRoleRepository userRoleRepository;
 
+    private final UserMapper userMapper;
 
     @Override
-    public User getUser(Long id) {
-        return null;
+    public UserDto getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return userMapper.userToDto(user);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::userToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -34,8 +50,8 @@ public class UserApiService implements UserService {
     }
 
     @Override
-    public Long createUser(RegistrationUserRequest registrationUserRequest) {
-        final User user = buildNewUser(registrationUserRequest);
+    public Long createUser(UserDto userDto) {
+        final User user = buildNewUser(userDto);
         return userRepository.save(user).getId();
     }
 
@@ -49,7 +65,7 @@ public class UserApiService implements UserService {
 
     }
 
-    private User buildNewUser(RegistrationUserRequest request) {
+    private User buildNewUser(UserDto request) {
         return User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
