@@ -1,7 +1,7 @@
 package by.it.academy.ishop.mappers;
 
-import by.it.academy.ishop.dtos.requests.CategoryDto;
-import by.it.academy.ishop.dtos.requests.ProductDto;
+import by.it.academy.ishop.dtos.CategoryDto;
+import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.entities.product.Category;
 import by.it.academy.ishop.entities.product.Product;
 import org.modelmapper.ModelMapper;

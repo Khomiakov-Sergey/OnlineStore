@@ -1,21 +1,19 @@
 package by.it.academy.ishop.services.product;
 
-import by.it.academy.ishop.dtos.requests.CategoryDto;
-import by.it.academy.ishop.dtos.requests.ProductDto;
+import by.it.academy.ishop.dtos.CategoryDto;
+import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.entities.product.Category;
 import by.it.academy.ishop.entities.product.Product;
-import by.it.academy.ishop.entities.user.User;
 import by.it.academy.ishop.mappers.ProductMapper;
 import by.it.academy.ishop.repositories.product.CategoryRepository;
 import by.it.academy.ishop.repositories.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,6 +25,7 @@ public class ProductApiService implements ProductService {
     private final ProductMapper productMapper;
 
     @Override
+    @Transactional
     public List<ProductDto> getAllProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
@@ -35,11 +34,17 @@ public class ProductApiService implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProductsByCategory(Category category) {
-        return null/*productRepository.findProductsByCategory(category)*/;
+    @Transactional
+    public List<ProductDto> getAllProductsByCategory(CategoryDto categoryDto) {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .filter(product -> product.getCategory().getCategoryType().equals(categoryDto.getCategoryType()))
+                .map(productMapper::productToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public ProductDto getProduct(Long id) {
         Product product = productRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return productMapper.productToDto(product);
@@ -58,13 +63,16 @@ public class ProductApiService implements ProductService {
     }
 
     @Override
+    @Transactional
     public Long createProduct(ProductDto productDto) {
         final Product product = buildNewProduct(productDto);
         return productRepository.save(product).getId();
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
 
     }
 
