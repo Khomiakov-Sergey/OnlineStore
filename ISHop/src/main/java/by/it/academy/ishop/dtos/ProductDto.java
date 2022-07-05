@@ -1,4 +1,4 @@
-package by.it.academy.ishop.dtos.requests;
+package by.it.academy.ishop.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class ProductDto {
+    @Positive
+    private Long id;
     @NotBlank
     private String model;
     private CategoryDto category;

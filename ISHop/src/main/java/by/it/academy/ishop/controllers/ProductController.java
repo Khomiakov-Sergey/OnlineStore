@@ -1,7 +1,7 @@
 package by.it.academy.ishop.controllers;
 
-import by.it.academy.ishop.dtos.requests.ProductDto;
-import by.it.academy.ishop.entities.product.Product;
+import by.it.academy.ishop.dtos.CategoryDto;
+import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.services.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,15 +30,27 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("category")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductDto>  getAllProductsByCategory(@RequestBody @Valid CategoryDto categoryDto) {
+        return productService.getAllProductsByCategory(categoryDto);
+    }
+
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProductDto getProduct(@PathVariable Long id) {
+    public ProductDto getProduct(@PathVariable @Valid Long id) {
         return productService.getProduct(id);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProduct(@PathVariable("id") @Valid Long id) {
+        productService.deleteProduct(id);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Long updateProduct(@PathVariable("id") Long id, @RequestBody @Valid ProductDto productDto) {
+    public Long updateProduct(@PathVariable("id") @Valid Long id, @RequestBody @Valid ProductDto productDto) {
         return productService.updateProduct(id, productDto);
     }
 
