@@ -17,8 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "orders")
-@EqualsAndHashCode(exclude = "orders")
 @Entity
 @Table(name = "products")
 public class Product {
@@ -29,7 +27,7 @@ public class Product {
     @Column(name = "product_id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -40,7 +38,7 @@ public class Product {
     private BigDecimal price;
 
     @Column(name = "product_number", nullable = false)
-    private int number;
+    private Long number;
 
     @Column(name = "product_description", nullable = false)
     private String description;

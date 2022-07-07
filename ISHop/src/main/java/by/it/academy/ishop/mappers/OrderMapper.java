@@ -1,17 +1,17 @@
 package by.it.academy.ishop.mappers;
 
-import by.it.academy.ishop.dtos.CartDto;
+import by.it.academy.ishop.dtos.responds.OrderDtoRespond;
 import by.it.academy.ishop.dtos.responds.UserDtoRespond;
-import by.it.academy.ishop.entities.cart.Cart;
+import by.it.academy.ishop.entities.order.Order;
 import by.it.academy.ishop.entities.user.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CartMapper {
+public class OrderMapper {
     private final ModelMapper modelMapper;
 
-    public CartMapper() {
+    public OrderMapper() {
         this.modelMapper = new ModelMapper();
     }
 
@@ -19,10 +19,9 @@ public class CartMapper {
         return modelMapper.map(user, UserDtoRespond.class);
     }
 
-    public CartDto cartToDto(Cart cart) {
-        CartDto cartDto = modelMapper.map(cart, CartDto.class);
-        cartDto.setUser(convertToUserDto(cart.getUser()));
-        return cartDto;
+    public OrderDtoRespond orderToDto(Order order) {
+        OrderDtoRespond orderDtoRespond = modelMapper.map(order, OrderDtoRespond.class);
+        orderDtoRespond.setUser(convertToUserDto(order.getUser()));
+        return orderDtoRespond;
     }
-
 }

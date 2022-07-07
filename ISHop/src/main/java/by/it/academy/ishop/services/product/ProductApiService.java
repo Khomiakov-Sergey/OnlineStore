@@ -2,7 +2,6 @@ package by.it.academy.ishop.services.product;
 
 import by.it.academy.ishop.dtos.CategoryDto;
 import by.it.academy.ishop.dtos.ProductDto;
-import by.it.academy.ishop.entities.product.Category;
 import by.it.academy.ishop.entities.product.Product;
 import by.it.academy.ishop.mappers.ProductMapper;
 import by.it.academy.ishop.repositories.product.CategoryRepository;
@@ -26,7 +25,7 @@ public class ProductApiService implements ProductService {
 
     @Override
     @Transactional
-    public List<ProductDto> getAllProducts() {
+    public List<ProductDto> getProducts() {
         List<Product> products = productRepository.findAll();
         return products.stream()
                 .map(productMapper::productToDto)
@@ -35,10 +34,9 @@ public class ProductApiService implements ProductService {
 
     @Override
     @Transactional
-    public List<ProductDto> getAllProductsByCategory(CategoryDto categoryDto) {
-        List<Product> products = productRepository.findAll();
+    public List<ProductDto> getProductsByCategory(CategoryDto categoryDto) {
+        List<Product> products = productRepository.findProductByCategory_CategoryType(categoryDto.getCategoryType());
         return products.stream()
-                .filter(product -> product.getCategory().getCategoryType().equals(categoryDto.getCategoryType()))
                 .map(productMapper::productToDto)
                 .collect(Collectors.toList());
     }

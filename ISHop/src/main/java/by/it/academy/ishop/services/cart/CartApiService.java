@@ -29,14 +29,14 @@ public class CartApiService implements CartService {
     @Override
     @Transactional
     public List<CartDto> addCartByUserIdAndProductId(CartDto cartDto) {
-        cartRepository.save(createCart(cartDto));
-        return this.getCartByUserId(cartDto.getUser().getId());
+        cartRepository.save(buildCart(cartDto));
+        return this.getCartsByUserId(cartDto.getUser().getId());
     }
 
     @Override
     @Transactional
-    public List<CartDto> getCartByUserId(Long userId) {
-        List<Cart> carts = cartRepository.findCartByUserId(userId);
+    public List<CartDto> getCartsByUserId(Long userId) {
+        List<Cart> carts = cartRepository.findCartsByUserId(userId);
         return carts.stream()
                 .map(cartMapper::cartToDto)
                 .collect(Collectors.toList());
@@ -44,16 +44,25 @@ public class CartApiService implements CartService {
 
     @Override
     @Transactional
-    public List<CartDto> removeCartByUserId(Long cartId, Long userId) {
+    public List<CartDto> deleteCartByCartIdAndUserId(Long cartId, Long userId) {
         cartRepository.deleteCartByIdAndUserId(cartId, userId);
-        return this.getCartByUserId(userId);
+        return this.getCartsByUserId(userId);
     }
 
-    private Cart createCart(CartDto cartDto) {
+    @Override
+    public CartDto getCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(NoSuchElementException::new);
+        return cartMapper.cartToDto(cart);
+    }
+
+    private Cart buildCart(CartDto cartDto) {
         return Cart.builder()
-                .product(productRepository.findById(cartDto.getProduct().getId()).orElseThrow(NoSuchElementException::new))
-                .cost(productRepository.findById(cartDto.getProduct().getId()).get().getPrice())
-                .user(userRepository.findById(cartDto.getUser().getId()).orElseThrow(NoSuchElementException::new))
+                .product(productRepository.findById(cartDto.getProduct().getId()).
+                        orElseThrow(NoSuchElementException::new))
+                .cost(productRepository.findById(cartDto.getProduct().getId()).
+                        orElseThrow(NoSuchElementException::new).getPrice())
+                .user(userRepository.findById(cartDto.getUser().getId()).
+                        orElseThrow(NoSuchElementException::new))
                 .quantity(cartDto.getQuantity())
                 .build();
     }

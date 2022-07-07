@@ -1,5 +1,6 @@
-package by.it.academy.ishop.dtos;
+package by.it.academy.ishop.dtos.requests;
 
+import by.it.academy.ishop.dtos.UserRoleDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDtoRequest {
     @Positive
     private Long id;
     @NotBlank
@@ -28,4 +29,5 @@ public class UserDto {
     @NotBlank
     private String password;
     private UserRoleDto role;
+
 }

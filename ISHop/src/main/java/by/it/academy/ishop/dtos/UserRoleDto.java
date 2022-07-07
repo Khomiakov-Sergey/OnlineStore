@@ -13,9 +13,6 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRoleDto {
-    @Positive
-    private Long id;
-
     @Enumerated(EnumType.STRING)
     Role role;
 }

@@ -1,8 +1,6 @@
 package by.it.academy.ishop.mappers;
 
-import by.it.academy.ishop.dtos.CategoryDto;
 import by.it.academy.ishop.dtos.ProductDto;
-import by.it.academy.ishop.entities.product.Category;
 import by.it.academy.ishop.entities.product.Product;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -13,16 +11,10 @@ public class ProductMapper {
 
     public ProductMapper() {
         this.modelMapper = new ModelMapper();
-        modelMapper.createTypeMap(Category.class, CategoryDto.class);
     }
 
     public ProductDto productToDto(Product product) {
         return modelMapper.map(product, ProductDto.class);
     }
-
-    public Product dtoToProduct(ProductDto productDto) {
-        return modelMapper.map(productDto, Product.class);
-    }
-
 
 }

@@ -2,13 +2,10 @@ package by.it.academy.ishop.entities.order;
 
 import by.it.academy.ishop.entities.product.Product;
 import by.it.academy.ishop.entities.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -42,10 +40,10 @@ public class Order {
     @Column(name = "order_quantity", nullable = false)
     private Long quantity;
 
-    @Column(name = "order_cost", nullable = false)
-    private BigDecimal cost;
+    @Column(name = "order_amount", nullable = false)
+    private BigDecimal amount;
 
-    @Column(name = "order_created_at",nullable = false)
-    private LocalDateTime created_at;
+    @Column(name = "order_created_at", nullable = false)
+    private LocalDateTime createdAt;
 
 }

@@ -22,6 +22,6 @@ public class ProductDto {
     @Positive
     private BigDecimal price;
     @Positive
-    private int number;
+    private Long number;
     private String description;
 }

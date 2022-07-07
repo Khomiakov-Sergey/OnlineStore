@@ -1,8 +1,6 @@
 package by.it.academy.ishop.entities.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -14,7 +12,8 @@ import java.util.Set;
 @Table(name = "user_role")
 public class UserRole {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
+    @SequenceGenerator(name = "role_seq", sequenceName = "seq_role")
     @Column(name = "id", nullable = false)
     private Long id;
 

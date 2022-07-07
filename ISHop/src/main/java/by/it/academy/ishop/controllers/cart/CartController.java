@@ -1,8 +1,6 @@
-package by.it.academy.ishop.controllers;
+package by.it.academy.ishop.controllers.cart;
 
 import by.it.academy.ishop.dtos.CartDto;
-import by.it.academy.ishop.dtos.CategoryDto;
-import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.services.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@RequestMapping("/cart")
+@RequestMapping("/carts")
 @RestController
 @RequiredArgsConstructor
 public class CartController {
@@ -21,13 +19,18 @@ public class CartController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
-    public List<CartDto> createUser(@RequestBody @Valid CartDto cartDto) {
+    public List<CartDto> createCart(@RequestBody @Valid CartDto cartDto) {
         return cartService.addCartByUserIdAndProductId(cartDto);
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("user/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<CartDto>  getCartByUserId(@PathVariable Long userId) {
-        return cartService.getCartByUserId(userId);
+    public List<CartDto> getCartsByUserId(@PathVariable Long userId) {
+        return cartService.getCartsByUserId(userId);
+    }
+
+    @DeleteMapping
+    public List<CartDto> deleteCart(@RequestParam(value = "cartId") Long cartId, @RequestParam(value = "userId") Long userId) {
+        return cartService.deleteCartByCartIdAndUserId(cartId, userId);
     }
 }

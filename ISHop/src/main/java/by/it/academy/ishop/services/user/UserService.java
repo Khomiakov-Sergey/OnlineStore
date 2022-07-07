@@ -1,17 +1,19 @@
 package by.it.academy.ishop.services.user;
 
-import by.it.academy.ishop.dtos.UserDto;
+import by.it.academy.ishop.dtos.requests.UserDtoRequest;
+import by.it.academy.ishop.dtos.responds.UserDtoRespond;
 
 import java.util.List;
 
 public interface UserService {
-    UserDto getUser(Long id);
 
-    List<UserDto> getAllUsers();
+    UserDtoRespond getUser(Long id);
 
-    Long updateUser(Long id, UserDto user);
+    List<UserDtoRespond> getUsers();
 
-    Long createUser(UserDto userDto);
+    Long updateUser(Long id, UserDtoRequest userDtoRequest);
+
+    Long createUser(UserDtoRequest userDtoRequest);
 
     void deleteUser(Long id);
 

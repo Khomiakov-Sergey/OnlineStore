@@ -11,8 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"product", "user"})
-@EqualsAndHashCode(exclude = {"product", "user"})
 @Entity
 @Table(name = "carts")
 public class Cart {

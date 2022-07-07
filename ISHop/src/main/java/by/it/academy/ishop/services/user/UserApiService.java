@@ -1,6 +1,7 @@
 package by.it.academy.ishop.services.user;
 
-import by.it.academy.ishop.dtos.UserDto;
+import by.it.academy.ishop.dtos.requests.UserDtoRequest;
+import by.it.academy.ishop.dtos.responds.UserDtoRespond;
 import by.it.academy.ishop.entities.user.Role;
 import by.it.academy.ishop.entities.user.User;
 import by.it.academy.ishop.mappers.UserMapper;
@@ -28,14 +29,14 @@ public class UserApiService implements UserService {
 
     @Override
     @Transactional
-    public UserDto getUser(Long id) {
+    public UserDtoRespond getUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return userMapper.userToDto(user);
     }
 
     @Override
     @Transactional
-    public List<UserDto> getAllUsers() {
+    public List<UserDtoRespond> getUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(userMapper::userToDto)
@@ -44,7 +45,7 @@ public class UserApiService implements UserService {
 
     @Override
     @Transactional
-    public Long updateUser(Long id, UserDto userDto) {
+    public Long updateUser(Long id, UserDtoRequest userDto) {
         User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -54,11 +55,10 @@ public class UserApiService implements UserService {
 
     @Override
     @Transactional
-    public Long createUser(UserDto userDto) {
-        final User user = buildNewUser(userDto);
+    public Long createUser(UserDtoRequest userDtoRequest) {
+        final User user = buildNewUser(userDtoRequest);
         return userRepository.save(user).getId();
     }
-
 
     @Override
     @Transactional
@@ -66,14 +66,14 @@ public class UserApiService implements UserService {
         userRepository.deleteById(id);
     }
 
-    private User buildNewUser(UserDto request) {
+    private User buildNewUser(UserDtoRequest userDtoRequest) {
         return User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .age(request.getAge())
-                .login(request.getLogin())
-                .password(request.getPassword())
-                .email(request.getEmail())
+                .firstName(userDtoRequest.getFirstName())
+                .lastName(userDtoRequest.getLastName())
+                .age(userDtoRequest.getAge())
+                .login(userDtoRequest.getLogin())
+                .password(userDtoRequest.getPassword())
+                .email(userDtoRequest.getEmail())
                 .created_at(LocalDateTime.now())
                 .userRole(userRoleRepository.findByRole(Role.USER))
                 .build();

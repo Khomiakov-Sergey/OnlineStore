@@ -1,18 +1,17 @@
 package by.it.academy.ishop.dtos;
 
-import by.it.academy.ishop.entities.product.CategoryType;
+import by.it.academy.ishop.entities.order.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryDto {
+public class OrderStatusDto {
     @Enumerated(EnumType.STRING)
-    CategoryType categoryType;
+    Status status;
 }
