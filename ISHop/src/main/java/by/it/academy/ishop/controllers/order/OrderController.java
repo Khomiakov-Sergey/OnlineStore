@@ -20,7 +20,7 @@ public class OrderController {
 
     @PostMapping("create")
     @ResponseStatus(HttpStatus.CREATED)
-    private List<OrderDtoRespond> createOrder(@RequestBody @Valid OrderDtoRequest orderDtoRequest) {
+    public List<OrderDtoRespond> createOrder(@RequestBody @Valid OrderDtoRequest orderDtoRequest) {
         return orderService.createOrder(orderDtoRequest);
     }
 

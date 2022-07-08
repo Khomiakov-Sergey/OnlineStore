@@ -14,8 +14,7 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 @Builder
 public class OrderDtoRequest {
-    @Positive
-    private Long id;
+
     private ProductDto product;
     private UserDtoRespond user;
     @Positive
