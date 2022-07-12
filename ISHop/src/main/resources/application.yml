@@ -3,13 +3,5 @@ spring:
     name: ishop-api
   config:
     import: optional:configserver:http://localhost:8888
-  main:
-    allow-circular-references: true
-security:
-  jwt:
-    token:
-      secret: shop-api
-      expired: 3600000
-
 server:
   port: 8080
