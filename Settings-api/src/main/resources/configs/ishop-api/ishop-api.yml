@@ -11,4 +11,7 @@ spring:
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
-
+jwt:
+  token:
+    secret: shop-api
+    expired: 3600000
