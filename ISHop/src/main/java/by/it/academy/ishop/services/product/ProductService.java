@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductDto> getProducts();
+    List<ProductDto> findProducts();
 
-    List<ProductDto> getProductsByCategory(CategoryDto categoryDto);
+    List<ProductDto> findProductsByCategory(CategoryDto categoryDto);
 
-    ProductDto getProduct(Long id);
+    ProductDto findProduct(Long id);
 
     Long updateProduct(Long id, ProductDto productDto);
 

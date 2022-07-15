@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface CartService {
 
-    List<CartDto> addCartByUserIdAndProductId(CartDto cartDto);
+    List<CartDto> createCart(CartDto cartDto);
 
-    List<CartDto> getCartsByUserId(Long userId);
+    List<CartDto> findCartsByUserId(Long userId);
 
     List<CartDto> deleteCartByCartIdAndUserId(Long cartId, Long userId);
 
-    CartDto getCart(Long cartId);
+    CartDto findCart(Long cartId);
 }

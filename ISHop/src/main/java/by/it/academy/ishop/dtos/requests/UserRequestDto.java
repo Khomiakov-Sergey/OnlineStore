@@ -13,7 +13,7 @@ import javax.validation.constraints.Positive;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDtoRequest {
+public class UserRequestDto {
     @Positive
     private Long id;
     @NotBlank

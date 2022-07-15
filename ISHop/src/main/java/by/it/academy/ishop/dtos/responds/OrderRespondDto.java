@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDtoRespond {
+public class OrderRespondDto {
     @Positive
     private Long id;
     private ProductDto product;
-    private UserDtoRespond user;
+    private UserRespondDto user;
     @Positive
     private Long quantity;
     private BigDecimal amount;

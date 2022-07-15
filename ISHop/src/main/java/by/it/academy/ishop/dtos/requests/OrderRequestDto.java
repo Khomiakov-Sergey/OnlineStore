@@ -1,7 +1,7 @@
 package by.it.academy.ishop.dtos.requests;
 
 import by.it.academy.ishop.dtos.ProductDto;
-import by.it.academy.ishop.dtos.responds.UserDtoRespond;
+import by.it.academy.ishop.dtos.responds.UserRespondDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +13,10 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDtoRequest {
+public class OrderRequestDto {
 
     private ProductDto product;
-    private UserDtoRespond user;
+    private UserRespondDto user;
     @Positive
     private Long quantity;
 

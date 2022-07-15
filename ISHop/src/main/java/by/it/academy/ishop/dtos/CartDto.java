@@ -1,6 +1,6 @@
 package by.it.academy.ishop.dtos;
 
-import by.it.academy.ishop.dtos.responds.UserDtoRespond;
+import by.it.academy.ishop.dtos.responds.UserRespondDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class CartDto {
     @Positive
     private Long id;
     private ProductDto product;
-    private UserDtoRespond user;
+    private UserRespondDto user;
     @Positive
     private Long quantity;
     @Positive

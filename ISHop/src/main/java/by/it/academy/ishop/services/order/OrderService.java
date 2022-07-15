@@ -1,15 +1,15 @@
 package by.it.academy.ishop.services.order;
 
-import by.it.academy.ishop.dtos.requests.OrderDtoRequest;
-import by.it.academy.ishop.dtos.responds.OrderDtoRespond;
+import by.it.academy.ishop.dtos.requests.OrderRequestDto;
+import by.it.academy.ishop.dtos.responds.OrderRespondDto;
 
 import java.util.List;
 
 public interface OrderService {
 
-    OrderDtoRespond getOrder(Long orderId);
+    OrderRespondDto findOrder(Long orderId);
 
-    List<OrderDtoRespond> getOrdersByUserId(Long userId);
+    List<OrderRespondDto> getOrdersByUserId(Long userId);
 
-    List<OrderDtoRespond> createOrder(OrderDtoRequest orderDtoRequest);
+    List<OrderRespondDto> createOrder(OrderRequestDto orderRequestDto);
 }

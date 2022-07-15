@@ -1,7 +1,10 @@
 package by.it.academy.ishop.entities.user;
 
 import by.it.academy.ishop.entities.order.Order;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,6 +43,7 @@ public class User {
 
     @Column(name = "user_created_at", nullable = false)
     private LocalDateTime created_at;
+
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id")
