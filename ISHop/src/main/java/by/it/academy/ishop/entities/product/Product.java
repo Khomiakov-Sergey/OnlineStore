@@ -1,5 +1,6 @@
 package by.it.academy.ishop.entities.product;
 
+import by.it.academy.ishop.entities.cart.Cart;
 import by.it.academy.ishop.entities.order.Order;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,6 +17,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"orders", "carts"})
+@ToString(exclude = {"orders", "carts"})
 @Builder
 @Entity
 @Table(name = "products")
@@ -43,8 +46,11 @@ public class Product {
     @Column(name = "product_description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
 
 }

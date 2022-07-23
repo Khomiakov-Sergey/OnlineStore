@@ -8,6 +8,9 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@EqualsAndHashCode(exclude = "products")
+@ToString(exclude = "products")
 @Entity
 @Table(name = "category")
 public class Category {

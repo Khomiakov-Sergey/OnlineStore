@@ -1,5 +1,6 @@
 package by.it.academy.ishop.services.order;
 
+import by.it.academy.ishop.dtos.OrderStatusDto;
 import by.it.academy.ishop.dtos.requests.OrderRequestDto;
 import by.it.academy.ishop.dtos.responds.OrderRespondDto;
 import by.it.academy.ishop.entities.order.Order;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -55,7 +57,7 @@ public class OrderApiService implements OrderService{
 
     /**
      * This method searches orders by the transferred user id using OrderRepository.
-     * @param userId - user identifier.
+     * @param userId - User identifier.
      * @return List<OrderRespondDto> - List of all orders for current user.
      */
     @Override
@@ -84,6 +86,32 @@ public class OrderApiService implements OrderService{
     }
 
     /**
+     * This method updates order`s status to CANCELED and transfers it in OrderRepository to save.
+     * @param orderId - Order identifier.
+     * @param userId - User identifier.
+     */
+    @Override
+    @Transactional
+    public void cancelOrderByOrderIdAndUserId(Long orderId, Long userId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityByIdNotFoundException(orderId));
+        order.setOrderStatus(orderStatusRepository.findByStatus(Status.CANCELLED));
+    }
+
+    /**
+     * This method updates order`s status and transfers it in OrderRepository to save.
+     * @param orderId - Order identifier.
+     * @param orderStatusDto - Product id, User id, products quantity for order.
+     * @return id - Order identifier.
+     */
+    @Override
+    @Transactional
+    public Long updateStatusOrder(Long orderId, OrderStatusDto orderStatusDto) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityByIdNotFoundException(orderId));
+        order.setOrderStatus(orderStatusRepository.findByStatus(orderStatusDto.getStatus()));
+        return order.getId();
+    }
+
+    /**
      * This intermediate method helps main method <>createOrder</> build cart from request.
      * @param orderRequestDto - Product id, User id, products quantity for order.
      * @return order - New Order.
@@ -102,7 +130,7 @@ public class OrderApiService implements OrderService{
                         .multiply(BigDecimal.valueOf(orderRequestDto.getQuantity())))
                 .quantity(orderRequestDto.getQuantity())
                 .orderStatus(orderStatusRepository.findByStatus(Status.CREATED))
-                .createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .build();
     }
 }

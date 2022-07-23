@@ -1,13 +1,12 @@
 package by.it.academy.ishop.dtos.responds;
 
-import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.dtos.OrderStatusDto;
+import by.it.academy.ishop.dtos.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -16,11 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class OrderRespondDto {
-    @Positive
     private Long id;
     private ProductDto product;
     private UserRespondDto user;
-    @Positive
     private Long quantity;
     private BigDecimal amount;
     private OrderStatusDto orderStatus;

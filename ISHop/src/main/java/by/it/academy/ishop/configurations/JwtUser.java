@@ -2,6 +2,7 @@ package by.it.academy.ishop.configurations;
 
 import by.it.academy.ishop.entities.user.User;
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+@Data
 @Builder
 public class JwtUser implements UserDetails {
 

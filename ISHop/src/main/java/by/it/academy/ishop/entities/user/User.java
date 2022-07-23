@@ -1,10 +1,8 @@
 package by.it.academy.ishop.entities.user;
 
+import by.it.academy.ishop.entities.cart.Cart;
 import by.it.academy.ishop.entities.order.Order;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +11,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"orders", "carts"})
+@ToString(exclude = {"orders", "carts"})
 @Builder
 @Entity
 @Table(name = "users")
@@ -42,14 +42,17 @@ public class User {
     private String email;
 
     @Column(name = "user_created_at", nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id")
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
 }

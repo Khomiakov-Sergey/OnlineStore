@@ -1,5 +1,6 @@
 package by.it.academy.ishop.controllers.order;
 
+import by.it.academy.ishop.dtos.OrderStatusDto;
 import by.it.academy.ishop.dtos.requests.OrderRequestDto;
 import by.it.academy.ishop.dtos.responds.OrderRespondDto;
 import by.it.academy.ishop.services.order.OrderService;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 1.0
  */
 @Slf4j
-@RequestMapping("orders")
+@RequestMapping
 @RestController
 @RequiredArgsConstructor
 public class OrderController {
@@ -29,7 +30,7 @@ public class OrderController {
      * @param orderRequestDto - Product id, User id, products quantity for order.
      * @return List<OrderRespondDto> - List of all orders for current user.
      */
-    @PostMapping()
+    @PostMapping("orders/create")
     @ResponseStatus(HttpStatus.CREATED)
     public List<OrderRespondDto> createOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         return orderService.createOrder(orderRequestDto);
@@ -41,7 +42,7 @@ public class OrderController {
      * @param userId - user identifier.
      * @return List<OrderRespondDto> - List of all orders for current user.
      */
-    @GetMapping("user/{userId}")
+    @GetMapping("orders/user/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<OrderRespondDto> getOrdersByUserId(@PathVariable Long userId) {
         return orderService.getOrdersByUserId(userId);
@@ -49,13 +50,33 @@ public class OrderController {
 
     /**
      * This method gets order identifier and tries to find order with using service layer.
-     * @param id - Order identifier.
+     * For role ADMIN.
+     * @param orderId - Order identifier.
      * @return OrderRespondDto - Order representative.
      */
-    @GetMapping("{id}")
+    @GetMapping("admin/orders/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    public OrderRespondDto getOrder(@PathVariable Long id) {
-        return orderService.findOrder(id);
+    public OrderRespondDto getOrder(@PathVariable Long orderId) {
+        return orderService.findOrder(orderId);
+    }
+
+    /**
+     * This method gets order identifier and tries to find order with using service layer.
+     * For role ADMIN.
+     * @param orderId        - Order identifier.
+     * @param orderStatusDto - Product id, User id, products quantity for order.
+     * @return orderId - Order identifier.
+     */
+    @PutMapping("admin/orders/{orderId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Long updateStatusOrder(@PathVariable Long orderId, @RequestBody @Valid OrderStatusDto orderStatusDto) {
+        return orderService.updateStatusOrder(orderId, orderStatusDto);
+    }
+
+    @PutMapping("orders/cancel")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateStatusOrder(@RequestParam(value = "orderId") Long orderId, @RequestParam(value = "userId") Long userId) {
+        orderService.cancelOrderByOrderIdAndUserId(orderId, userId);
     }
 
 }

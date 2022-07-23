@@ -22,6 +22,8 @@ import static org.springframework.util.StringUtils.hasText;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER = "Bearer ";
 
     private final JwtProvider jwtProvider;
 
@@ -30,9 +32,8 @@ public class JwtFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
-        log.info("do filter");
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
-        if (token!=null && jwtProvider.validateToken(token)){
+        if (token != null && jwtProvider.validateToken(token)) {
             String login = jwtProvider.getLoginFromToken(token);
             JwtUser jwtUser = jwtUserDetailsService.loadUserByUsername(login);
             UsernamePasswordAuthenticationToken auth =
@@ -42,9 +43,9 @@ public class JwtFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String getTokenFromRequest(HttpServletRequest request){
-        String bearer = request.getHeader("Authorization");
-        if(hasText(bearer) && bearer.startsWith("Bearer ")){
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String bearer = request.getHeader(AUTHORIZATION);
+        if (hasText(bearer) && bearer.startsWith(BEARER)) {
             return bearer.substring(7);
         }
         return null;

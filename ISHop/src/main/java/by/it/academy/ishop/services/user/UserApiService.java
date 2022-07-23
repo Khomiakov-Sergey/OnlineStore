@@ -13,11 +13,13 @@ import by.it.academy.ishop.repositories.user.UserRepository;
 import by.it.academy.ishop.repositories.user.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -70,7 +72,7 @@ public class UserApiService implements UserService {
      * This method searches user by the transferred login and password by using UserRepository.
      * If login or password incorrect -> throw UserAuthenticationException.
      * Intermediate method.
-     * @param login - User unique login for authentication.
+     * @param login    - User unique login for authentication.
      * @param password - User unique password for authentication.
      * @return User - User representation.
      */
@@ -90,8 +92,8 @@ public class UserApiService implements UserService {
      */
     @Override
     @Transactional
-    public List<UserRespondDto> findAllUsers() {
-        List<User> users = userRepository.findAll();
+    public List<UserRespondDto> findAllUsers(Pageable pageable) {
+        List<User> users = userRepository.findAll(pageable).getContent();
         return users.stream()
                 .map(userMapper::userToDto)
                 .collect(Collectors.toList());
@@ -100,7 +102,7 @@ public class UserApiService implements UserService {
     /**
      * This method searches user by the transferred id and updates information by using UserRepository.
      * If it doesn`t exist -> throw EntityByIdNotFoundException.
-     * @param id - User identifier.
+     * @param id             - User identifier.
      * @param userRequestDto - User information from request.
      * @return id - User identifier.
      */
@@ -157,7 +159,7 @@ public class UserApiService implements UserService {
                 .login(userRequestDto.getLogin())
                 .password(passwordEncoder.encode(userRequestDto.getPassword()))
                 .email(userRequestDto.getEmail())
-                .created_at(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .userRole(userRoleRepository.findByRole(Role.ROLE_USER))
                 .build();
     }

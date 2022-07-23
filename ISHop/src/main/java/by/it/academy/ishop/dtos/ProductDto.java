@@ -23,5 +23,6 @@ public class ProductDto {
     private BigDecimal price;
     @Positive
     private Long number;
+    @NotBlank
     private String description;
 }

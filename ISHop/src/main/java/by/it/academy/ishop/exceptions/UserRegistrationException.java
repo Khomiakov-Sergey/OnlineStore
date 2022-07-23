@@ -7,7 +7,7 @@ package by.it.academy.ishop.exceptions;
  */
 public class UserRegistrationException extends IllegalArgumentException{
 
-    private static final String INCORRECT_REGISTRATION = "User with such login or email have already been registered";
+    private static final String INCORRECT_REGISTRATION = "User with such login or email has already been registered";
 
     public UserRegistrationException(String message) {
         super(message);

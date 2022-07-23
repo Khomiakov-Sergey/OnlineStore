@@ -10,6 +10,7 @@ import by.it.academy.ishop.repositories.product.CategoryRepository;
 import by.it.academy.ishop.repositories.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,8 +38,8 @@ public class ProductApiService implements ProductService {
      */
     @Override
     @Transactional
-    public List<ProductDto> findProducts() {
-        List<Product> products = productRepository.findAll();
+    public List<ProductDto> findProducts(Pageable pageable) {
+        List<Product> products = productRepository.findAll(pageable).getContent();
         return products.stream()
                 .map(productMapper::productToDto)
                 .collect(Collectors.toList());
@@ -83,7 +84,6 @@ public class ProductApiService implements ProductService {
     public Long updateProduct(Long id, ProductDto productDto) {
         Product product = productRepository.findById(id).orElseThrow(()-> new EntityByIdNotFoundException(id));
         product.setModel(productDto.getModel());
-        product.setCategory(categoryRepository.findByCategoryType(productDto.getCategory().getCategoryType()));
         product.setPrice(productDto.getPrice());
         product.setNumber(productDto.getNumber());
         product.setDescription(productDto.getDescription());

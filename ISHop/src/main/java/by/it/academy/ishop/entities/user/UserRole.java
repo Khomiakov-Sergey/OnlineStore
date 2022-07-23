@@ -9,6 +9,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @EqualsAndHashCode(exclude = "users")
 @ToString(exclude = "users")
 @Table(name = "user_role")
@@ -22,7 +23,6 @@ public class UserRole {
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
-
 
     @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
     private Set<User> users;

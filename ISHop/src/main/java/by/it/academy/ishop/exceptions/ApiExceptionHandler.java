@@ -62,4 +62,16 @@ public class ApiExceptionHandler {
         log.info((exception.toString()));
         return new ResponseError(exception.getMessage());
     }
+
+    /**
+     * This method handles defaultException.
+     * @param exception - default exception.
+     * @return ResponseError.
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(Exception.class)
+    public ResponseError defaultException (Exception exception){
+        log.info((exception.toString()));
+        return new ResponseError(exception.getMessage());
+    }
 }

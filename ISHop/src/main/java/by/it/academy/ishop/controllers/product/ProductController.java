@@ -5,6 +5,10 @@ import by.it.academy.ishop.dtos.ProductDto;
 import by.it.academy.ishop.services.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +46,10 @@ public class ProductController {
      */
     @GetMapping("products")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductDto> getProducts() {
-        return productService.findProducts();
+    public List<ProductDto> getProducts(@PageableDefault (size = 8)
+                                        @SortDefault (sort = "price", direction = Sort.Direction.DESC)
+                                        Pageable pageable) {
+        return productService.findProducts(pageable);
     }
 
     /**

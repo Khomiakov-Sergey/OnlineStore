@@ -14,6 +14,8 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
+    private static final String JWT_TOKEN_INVALID = "JWT token is expired or invalid";
+
     @Value("${jwt.token.secret}")
     private String secret;
     @Value("${jwt.token.expired}")
@@ -35,11 +37,11 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new UserAuthenticationException("JWT token is expired or invalid");
+            throw new UserAuthenticationException(JWT_TOKEN_INVALID);
         }
     }
 
-    public String getLoginFromToken(String token){
+    public String getLoginFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
