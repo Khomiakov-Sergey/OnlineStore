@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: ishop-api
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_db
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+jwt:
+  token:
+    secret: shop-api
+    expired: 3600000
+logging:
+  level:
+    org.springframework.web: ERROR
+    by.it.academy.ishop: INFO
+  file:
+    path: logs
