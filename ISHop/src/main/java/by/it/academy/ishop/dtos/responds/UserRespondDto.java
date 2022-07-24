@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO class for representing user respond.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @Builder
 @NoArgsConstructor

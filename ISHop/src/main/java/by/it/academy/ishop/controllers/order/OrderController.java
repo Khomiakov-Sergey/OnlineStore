@@ -30,7 +30,7 @@ public class OrderController {
      * @param orderRequestDto - Product id, User id, products quantity for order.
      * @return List<OrderRespondDto> - List of all orders for current user.
      */
-    @PostMapping("orders/create")
+    @PostMapping("orders")
     @ResponseStatus(HttpStatus.CREATED)
     public List<OrderRespondDto> createOrder(@RequestBody @Valid OrderRequestDto orderRequestDto) {
         return orderService.createOrder(orderRequestDto);
@@ -73,10 +73,5 @@ public class OrderController {
         return orderService.updateStatusOrder(orderId, orderStatusDto);
     }
 
-    @PutMapping("orders/cancel")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateStatusOrder(@RequestParam(value = "orderId") Long orderId, @RequestParam(value = "userId") Long userId) {
-        orderService.cancelOrderByOrderIdAndUserId(orderId, userId);
-    }
 
 }

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
@@ -19,7 +20,7 @@ import java.util.Objects;
  * @version 1.0
  */
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
 

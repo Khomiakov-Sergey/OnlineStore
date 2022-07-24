@@ -5,12 +5,15 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for entity, which describes order status(such as CREATED, IN_THE_PROCESSING, SENT_TO, DELIVERED_TO, CANCELLED).
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "orders")
-@ToString(exclude = "orders")
 @Entity
 @Table(name = "order_status")
 public class OrderStatus {
@@ -23,6 +26,8 @@ public class OrderStatus {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "orderStatus", cascade = CascadeType.ALL)
     private Set<Order> orders;
 }

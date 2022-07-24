@@ -1,6 +1,7 @@
 package by.it.academy.ishop.configurations.jwt;
 
 import by.it.academy.ishop.configurations.JwtUser;
+import by.it.academy.ishop.exceptions.UserAuthenticationException;
 import by.it.academy.ishop.services.user.JwtUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ import static org.springframework.util.StringUtils.hasText;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
+
+    private static final String JWT_TOKEN_INVALID = "JWT token is expired or invalid";
     private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer ";
 
@@ -33,12 +36,17 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
                          FilterChain filterChain) throws IOException, ServletException {
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
-        if (token != null && jwtProvider.validateToken(token)) {
-            String login = jwtProvider.getLoginFromToken(token);
-            JwtUser jwtUser = jwtUserDetailsService.loadUserByUsername(login);
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            if (token != null && jwtProvider.validateToken(token)) {
+                String login = jwtProvider.getLoginFromToken(token);
+                JwtUser jwtUser = jwtUserDetailsService.loadUserByUsername(login);
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(jwtUser, null, jwtUser.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        } catch (UserAuthenticationException ex) {
+            SecurityContextHolder.clearContext();
+            throw new UserAuthenticationException(JWT_TOKEN_INVALID);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

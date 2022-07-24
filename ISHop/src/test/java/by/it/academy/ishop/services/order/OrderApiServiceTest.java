@@ -1,4 +1,4 @@
-package by.it.academy.ishop.services;
+package by.it.academy.ishop.services.order;
 
 import by.it.academy.ishop.dtos.OrderStatusDto;
 import by.it.academy.ishop.dtos.ProductDto;
@@ -60,13 +60,10 @@ public class OrderApiServiceTest {
     private OrderRequestDto orderRequestDto;
 
     private OrderStatus orderStatus;
-    private OrderStatusDto orderStatusDto;
 
     private User user;
-    private UserRespondDto userRespondDto;
 
     private Product product;
-    private ProductDto productDto;
 
     private List<Order> orders;
     private List<OrderRespondDto> orderRespondDtos;
@@ -78,7 +75,7 @@ public class OrderApiServiceTest {
                 .id(2L)
                 .build();
 
-        userRespondDto = UserRespondDto.builder()
+        UserRespondDto userRespondDto = UserRespondDto.builder()
                 .id(2L)
                 .build();
 
@@ -88,17 +85,13 @@ public class OrderApiServiceTest {
                 .number(8L)
                 .build();
 
-        productDto = ProductDto.builder()
+        ProductDto productDto = ProductDto.builder()
                 .id(3L)
                 .price(BigDecimal.valueOf(1222.22))
                 .number(8L)
                 .build();
 
         orderStatus = OrderStatus.builder()
-                .status(Status.CREATED)
-                .build();
-
-        orderStatusDto = OrderStatusDto.builder()
                 .status(Status.CREATED)
                 .build();
 
@@ -132,7 +125,7 @@ public class OrderApiServiceTest {
 
     @Test
     @DisplayName("Orders search test for user valid id and orders have existed in DB")
-    void getOrdersWhenUserIdIsValidAndUserHasSomeOrders() {
+    void checkResponseFor_FindOrdersByUserId_MethodWhenUserIdIsValidAndUserHasSomeOrders() {
         Long userId = 2L;
 
         Mockito.when(orderRepository.findOrdersByUserId(userId)).thenReturn(orders);
@@ -146,7 +139,7 @@ public class OrderApiServiceTest {
 
     @Test
     @DisplayName("Orders search test for user invalid id ")
-    void getOrdersWhenUserIdIsNotValid() {
+    void checkResponseFor_FindOrdersByUserId_MethodWhenUserIdIsNotValid() {
         Long userId = 2L;
 
         Mockito.when(orderRepository.findOrdersByUserId(userId)).thenThrow(new EntityByIdNotFoundException(userId));
@@ -157,8 +150,8 @@ public class OrderApiServiceTest {
 
     @Test
     @DisplayName("Order creation test for valid orders values")
-    void creatOrderWhenOrderValueIsValid() {
-        Mockito.when(orderStatusRepository.findByStatus(Status.CREATED)).thenReturn(orderStatus);
+    void checkResponseFor_CreatOrder_MethodWhenOrderValueIsValid() {
+        Mockito.when(orderStatusRepository.findByStatus(Status.CREATED)).thenReturn(Optional.ofNullable(orderStatus));
         Mockito.when(productRepository.findById(orderRequestDto.getProduct().getId())).thenReturn(Optional.ofNullable(product));
         Mockito.when(userRepository.findById(orderRequestDto.getUser().getId())).thenReturn(Optional.ofNullable(user));
 

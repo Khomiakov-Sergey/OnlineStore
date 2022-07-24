@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * This class is responsible for entity Product.
+ * Class for entity, which describes product.
+ * @author Siarhei Khamiakou
+ * @version 1.0
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"orders", "carts"})
-@ToString(exclude = {"orders", "carts"})
 @Builder
 @Entity
 @Table(name = "products")
@@ -46,11 +46,14 @@ public class Product {
     @Column(name = "product_description", nullable = false)
     private String description;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<Cart> carts;
-
 
 }

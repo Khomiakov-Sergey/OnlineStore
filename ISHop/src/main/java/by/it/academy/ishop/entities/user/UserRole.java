@@ -5,13 +5,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for entity, which describes user role(such as ROLE_USER and ROLE_ADMIN).
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Builder
-@EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
 @Table(name = "user_role")
 public class UserRole {
     @Id
@@ -24,6 +27,8 @@ public class UserRole {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "userRole", cascade = CascadeType.ALL)
     private Set<User> users;
 }

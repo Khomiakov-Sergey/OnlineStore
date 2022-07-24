@@ -1,4 +1,4 @@
-package by.it.academy.ishop.services;
+package by.it.academy.ishop.services.cart;
 
 import by.it.academy.ishop.dtos.CartDto;
 import by.it.academy.ishop.dtos.ProductDto;
@@ -23,7 +23,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,7 +89,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Cart creation test for valid carts values")
-    void creatCartWhenCartValueIsValid() {
+    void checkResponseFor_CreatCart_MethodWhenCartValueIsValid() {
 
         Mockito.when(productRepository.findById(cartDto.getProduct().getId())).thenReturn(Optional.ofNullable(product));
         Mockito.when(userRepository.findById(cartDto.getUser().getId())).thenReturn(Optional.ofNullable(user));
@@ -113,7 +112,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Cart creation test for invalid product value")
-    void creatCartWhenProductValueIsNotValid() {
+    void checkResponseFor_CreatCart_MethodWhenProductValueIsNotValid() {
 
         Mockito.when(productRepository.findById(cartDto.getProduct().getId()))
                 .thenThrow(new EntityByIdNotFoundException(cartDto.getProduct().getId()));
@@ -125,7 +124,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Cart creation test for invalid user value")
-    void creatCartWhenUserValueIsNotValid() {
+    void checkResponseFor_CreatCart_MethodWhenUserValueIsNotValid() {
 
         Mockito.when(productRepository.findById(cartDto.getProduct().getId())).thenReturn(Optional.ofNullable(product));
         Mockito.when(userRepository.findById(cartDto.getUser().getId()))
@@ -138,7 +137,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Carts search test for user valid id and carts have existed in DB")
-    void findCartsWhenUserIdIsValidAndUserHasSomeCarts() {
+    void checkResponseFor_FindCartsByUserId_MethodWhenUserIdIsValidAndUserHasSomeCarts() {
         Long userId = 2L;
 
         Mockito.when(cartRepository.findCartsByUserId(userId)).thenReturn(carts);
@@ -152,7 +151,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Carts search test for user invalid id and carts have existed in DB")
-    void findCartsWhenUserIdIsNotValid() {
+    void checkResponseFor_FindCartsByUserId_MethodWhenUserIdIsNotValid() {
         Long userId = 2L;
 
         Mockito.when(cartRepository.findCartsByUserId(userId)).thenThrow(new EntityByIdNotFoundException(userId));
@@ -164,7 +163,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Cart search test for cart valid id ")
-    void findCartWhenCartIdIsValid() {
+    void checkResponseFor_FindCartById_MethodWhenCartIdIsValid() {
         Long cartId = 1L;
         cart.setId(1L);
 
@@ -179,7 +178,7 @@ public class CartApiServiceTest {
 
     @Test
     @DisplayName("Cart search test for cart invalid id ")
-    void findCartWhenCartIdIsNotValid() {
+    void checkResponseFor_FindCartById_MethodWhenCartIdIsNotValid() {
         Long cartId = 1L;
 
         Mockito.when(cartRepository.findById(cartId)).thenThrow(new EntityByIdNotFoundException(cartId));

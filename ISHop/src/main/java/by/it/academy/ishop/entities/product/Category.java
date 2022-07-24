@@ -5,12 +5,15 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Class for entity, which describes product category(such as IPHONE, IPOD, IMAC, WATCH, etc).
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(exclude = "products")
-@ToString(exclude = "products")
 @Entity
 @Table(name = "category")
 public class Category {
@@ -25,6 +28,8 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private CategoryType categoryType;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products;
 }

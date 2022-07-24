@@ -1,7 +1,9 @@
 package by.it.academy.ishop.entities.product;
 
 /**
- * This class is responsible for category type, which using by Product.class.
+ * Enum, which helps describe product category.
+ * @author Siarhei Khamiakou
+ * @version 1.0
  */
 public enum CategoryType {
     IPHONE,

@@ -10,6 +10,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
+/**
+ * DTO class for representing user request.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @Builder

@@ -8,11 +8,14 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Class for entity, which describes user.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"orders", "carts"})
-@ToString(exclude = {"orders", "carts"})
 @Builder
 @Entity
 @Table(name = "users")
@@ -44,14 +47,17 @@ public class User {
     @Column(name = "user_created_at", nullable = false)
     private LocalDateTime createdAt;
 
-
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "role_id")
     private UserRole userRole;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<Cart> carts;
 

@@ -9,11 +9,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+/**
+ * DTO class for representing order status.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderStatusDto {
     @Enumerated(EnumType.STRING)
-    Status status;
+    private Status status;
 }

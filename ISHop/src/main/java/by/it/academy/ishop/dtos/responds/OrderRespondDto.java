@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * DTO class for representing order respond.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -94,7 +94,8 @@ public class OrderApiService implements OrderService{
     @Transactional
     public void cancelOrderByOrderIdAndUserId(Long orderId, Long userId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityByIdNotFoundException(orderId));
-        order.setOrderStatus(orderStatusRepository.findByStatus(Status.CANCELLED));
+        order.setOrderStatus(orderStatusRepository.findByStatus(Status.CANCELLED)
+                .orElseThrow(NoSuchElementException::new));
     }
 
     /**
@@ -107,7 +108,8 @@ public class OrderApiService implements OrderService{
     @Transactional
     public Long updateStatusOrder(Long orderId, OrderStatusDto orderStatusDto) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityByIdNotFoundException(orderId));
-        order.setOrderStatus(orderStatusRepository.findByStatus(orderStatusDto.getStatus()));
+        order.setOrderStatus(orderStatusRepository.findByStatus(orderStatusDto.getStatus())
+                .orElseThrow(NoSuchElementException::new));
         return order.getId();
     }
 
@@ -129,7 +131,8 @@ public class OrderApiService implements OrderService{
                         .orElseThrow(() -> new EntityByIdNotFoundException(productId)).getPrice()
                         .multiply(BigDecimal.valueOf(orderRequestDto.getQuantity())))
                 .quantity(orderRequestDto.getQuantity())
-                .orderStatus(orderStatusRepository.findByStatus(Status.CREATED))
+                .orderStatus(orderStatusRepository.findByStatus(Status.CREATED)
+                        .orElseThrow(NoSuchElementException::new))
                 .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .build();
     }

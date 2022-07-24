@@ -7,6 +7,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * Class for entity, which describes cart(set of products, which want to buy a user in out store).
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,4 +1,4 @@
-package by.it.academy.ishop.services;
+package by.it.academy.ishop.services.user;
 
 import by.it.academy.ishop.configurations.jwt.JwtProvider;
 import by.it.academy.ishop.dtos.requests.UserRequestDto;
@@ -12,7 +12,6 @@ import by.it.academy.ishop.exceptions.UserRegistrationException;
 import by.it.academy.ishop.mappers.UserMapper;
 import by.it.academy.ishop.repositories.user.UserRepository;
 import by.it.academy.ishop.repositories.user.UserRoleRepository;
-import by.it.academy.ishop.services.user.UserApiService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,22 +60,24 @@ public class UserApiServiceTest {
     @BeforeEach
     @Test
     void init() {
-        userRole = new UserRole();
-        userRole.setRole(Role.ROLE_USER);
+        userRole = UserRole.builder()
+                .role(Role.ROLE_USER)
+                .build();
 
-        user = new User();
-        user.setFirstName("Ivan");
-        user.setLastName("Ivanov");
-        user.setEmail("ivanov@test.ru");
-        user.setAge(23);
-        user.setLogin("Iva");
-        user.setPassword("test");
-        user.setCreatedAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        user = User.builder()
+                .firstName("Ivan")
+                .lastName("Ivanov")
+                .email("ivanov@test.ru")
+                .age(23)
+                .login("Iva")
+                .password("test")
+                .createdAt(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                .build();
     }
 
     @Test
     @DisplayName("User creation test for valid values in user fields")
-    void createUserWhenAllFieldsAreValid() {
+    void checkResponseFor_CreateUser_MethodWhenAllFieldsAreValid() {
 
         User validUserFromDB = User.builder()
                 .id(1L)
@@ -106,7 +107,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("User creation test when user`s already existed in DB with such login or email")
-    void createUserWhenUserWithSuchLoginOrEmailAlreadyExist() {
+    void checkResponseFor_CreateUser_MethodWhenUserWithSuchLoginOrEmailAlreadyExist() {
 
         user.setUserRole(userRole);
 
@@ -126,11 +127,13 @@ public class UserApiServiceTest {
         Assertions.assertThrows(UserRegistrationException.class, () -> userService.createUser(userRequestDto));
 
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
+        Mockito.verify(passwordEncoder, Mockito.times(1)).encode(userRequestDto.getPassword());
+        Mockito.verify(userRoleRepository, Mockito.times(1)).findByRole(Role.ROLE_USER);
     }
 
     @Test
     @DisplayName("User search test for valid id in user")
-    void findUserWhenUserIdIsValid() {
+    void checkResponseFor_FindUserById_MethodWhenUserIdIsValid() {
         user.setId(2L);
         Long id = 2L;
 
@@ -147,12 +150,13 @@ public class UserApiServiceTest {
 
         Assertions.assertEquals(userRespondDto, userService.findUserById(id));
 
+        Mockito.verify(userMapper, Mockito.times(1)).userToDto(user);
         Mockito.verify(userRepository, Mockito.times(1)).findById(id);
     }
 
     @Test
     @DisplayName("User search test for invalid id in user")
-    void findUserWhenUserIdIsNotValid() {
+    void checkResponseFor_FindUserById_MethodWhenUserIdIsNotValid() {
         Long id = 2L;
 
         Mockito.when(userRepository.findById(id)).thenThrow(new EntityByIdNotFoundException(id));
@@ -163,7 +167,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("User search test for valid login in user")
-    void findUserByValidLogin() {
+    void checkResponseFor_FindUserByLogin_MethodWhenUserLoginIsValid() {
         String login = "Ivan";
 
         Mockito.when(userRepository.findByLogin(login)).thenReturn(user);
@@ -174,7 +178,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("Token generate test for valid login and password user")
-    void getUserTokenWhenUserLoginAndPasswordAreCorrect() {
+    void checkResponseFor_GetUserToken_MethodWhenUserLoginAndPasswordAreCorrect() {
         String login = "Iva";
         String password = "text";
         String token = "2dsad1233asd234@3D32";
@@ -187,13 +191,14 @@ public class UserApiServiceTest {
 
         Assertions.assertEquals(token, userService.findUserByLoginAndPassword(login, password));
 
+        Mockito.verify(userRepository, Mockito.times(2)).findByLogin(login);
         Mockito.verify(jwtProvider, Mockito.times(1)).generateToken(login);
         Mockito.verify(passwordEncoder, Mockito.times(1)).matches(password, user.getPassword());
     }
 
     @Test
     @DisplayName("Token generate test for invalid authentication(login incorrect)")
-    void throwUserAuthenticationExceptionWhenUserLoginIsNotCorrect() {
+    void checkResponseFor_GetUserToken_MethodWhenUserLoginIsNotCorrect() {
         String login = "Iva";
         String password = "text1";
 
@@ -208,7 +213,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("Token generate test for invalid authentication(password incorrect)")
-    void throwUserAuthenticationExceptionWhenUserPasswordIsNotCorrect() {
+    void checkResponseFor_GetUserToken_MethodWhenUserPasswordIsNotCorrect() {
         String login = "Ivan";
         String password = "test";
 
@@ -221,7 +226,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("User update test for valid user id and valid user fields ")
-    void updateUserWhenUserIdIsExistInDBAndUserFieldsValuesAreValid() {
+    void checkResponseFor_UpdateUser_MethodWhenUserIdIsExistInDBAndUserFieldsValuesAreValid() {
         Long id = 2L;
         user.setId(id);
 
@@ -244,7 +249,7 @@ public class UserApiServiceTest {
 
     @Test
     @DisplayName("The test of finding all users, when some user have existed in DB")
-    void getAllUsersFromDBWhereExistSomeUsers() {
+    void checkResponseFor_GetAllUsers_MethodWhenDBHasSomeUsers() {
 
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -266,6 +271,7 @@ public class UserApiServiceTest {
 
         Assertions.assertEquals(usersDto, userService.findAllUsers(pageable));
 
+        Mockito.verify(userMapper, Mockito.times(1)).userToDto(user);
         Mockito.verify(userRepository, Mockito.times(1)).findAll(pageable);
 
     }

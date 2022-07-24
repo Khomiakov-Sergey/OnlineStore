@@ -1,4 +1,4 @@
-package by.it.academy.ishop.services;
+package by.it.academy.ishop.services.product;
 
 import by.it.academy.ishop.dtos.CategoryDto;
 import by.it.academy.ishop.dtos.ProductDto;
@@ -79,34 +79,36 @@ public class ProductApiServiceTest {
 
     @Test
     @DisplayName("Product creation test for valid values in product")
-    void creatProductWhenProductIsValid() {
+    void checkResponseFor_CreatProduct_MethodWhenProductIsValid() {
         Product validProductFromDB = Product.builder()
                 .id(2L)
                 .build();
 
-        Mockito.when(categoryRepository.findByCategoryType(CategoryType.IPHONE)).thenReturn(category);
+        Mockito.when(categoryRepository.findByCategoryType(CategoryType.IPHONE)).thenReturn(Optional.ofNullable(category));
         Mockito.when(productRepository.save(product)).thenReturn(validProductFromDB);
 
         Assertions.assertEquals(validProductFromDB.getId(), productService.createProduct(productDto));
 
+        Mockito.verify(categoryRepository, Mockito.times(1)).findByCategoryType(CategoryType.IPHONE);
         Mockito.verify(productRepository, Mockito.times(1)).save(product);
     }
 
     @Test
     @DisplayName("Product creation test when product`s already existed in DB")
-    void creatProductWhenProductIsAlreadyExist() {
+    void checkResponseFor_CreatProduct_MethodWhenProductIsAlreadyExist() {
         Product existedProduct = product;
-        Mockito.when(categoryRepository.findByCategoryType(CategoryType.IPHONE)).thenReturn(category);
+        Mockito.when(categoryRepository.findByCategoryType(CategoryType.IPHONE)).thenReturn(Optional.ofNullable(category));
         Mockito.when(productRepository.save(existedProduct)).thenThrow(new ProductCreateException());
 
         Assertions.assertThrows(ProductCreateException.class, () -> productService.createProduct(productDto));
 
+        Mockito.verify(categoryRepository, Mockito.times(1)).findByCategoryType(CategoryType.IPHONE);
         Mockito.verify(productRepository, Mockito.times(1)).save(existedProduct);
     }
 
     @Test
     @DisplayName("Product search test for valid id in product")
-    void findProductWhenProductIdIsValid() {
+    void checkResponseFor_FindProduct_MethodWhenProductIdIsValid() {
         Long id = 2L;
 
         Mockito.when(productMapper.productToDto(product)).thenReturn(productDto);
@@ -114,12 +116,13 @@ public class ProductApiServiceTest {
 
         Assertions.assertEquals(productDto, productService.findProduct(id));
 
+        Mockito.verify(productMapper, Mockito.times(1)).productToDto(product);
         Mockito.verify(productRepository, Mockito.times(1)).findById(id);
     }
 
     @Test
     @DisplayName("Product search test for invalid id in product")
-    void findProductWhenProductIdIsNotExistInDB() {
+    void checkResponseFor_FindProduct_MethodWhenProductIdIsNotExistInDB() {
         Long id = 34L;
 
         Mockito.when(productRepository.findById(id)).thenThrow(new EntityByIdNotFoundException(id));
@@ -131,7 +134,7 @@ public class ProductApiServiceTest {
 
     @Test
     @DisplayName("Product update test for valid product id and valid product fields")
-    void updateProductWhenProductIdIsExistInDBAndProductFieldsValuesAreValid() {
+    void checkResponseFor_UpdateProduct_MethodWhenProductIdIsExistInDBAndProductFieldsValuesAreValid() {
         Long id = 2L;
 
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.ofNullable(product));
@@ -151,7 +154,7 @@ public class ProductApiServiceTest {
 
     @Test
     @DisplayName("Product update test for invalid id")
-    void updateProductWhenProductIdIsNotExistInDB() {
+    void checkResponseFor_UpdateProduct_MethodWhenProductIdIsNotExistInDB() {
         Long id = 34L;
 
         ProductDto newProductDto = ProductDto.builder()
@@ -171,7 +174,7 @@ public class ProductApiServiceTest {
 
     @Test
     @DisplayName("The test of finding all products, when some products have existed in DB")
-    void getAllProductsFromDBWhereExistSomeProducts() {
+    void checkResponseFor_FindAllProducts_MethodIfInDBExistSomeProducts() {
 
         Pageable pageable = PageRequest.of(0, 10);
 
@@ -186,12 +189,13 @@ public class ProductApiServiceTest {
         Assertions.assertEquals(productsDto, productService.findProducts(pageable));
 
         Mockito.verify(productRepository, Mockito.times(1)).findAll(pageable);
+        Mockito.verify(productMapper, Mockito.times(1)).productToDto(product);
 
     }
 
     @Test
     @DisplayName("The test of finding all products by chosen category, when some products have existed in DB")
-    void getAllProductsFromByChosenCategoryDBWhereExistSomeProducts() {
+    void checkResponseFor_FindAllProductsByChosenCategory_MethodIfInDBExistSomeProducts() {
         List<Product> products = List.of(product);
         List<ProductDto> productsDto = List.of(productDto);
 
@@ -201,6 +205,18 @@ public class ProductApiServiceTest {
         Assertions.assertEquals(productsDto, productService.findProductsByCategory(categoryDto));
 
         Mockito.verify(productRepository, Mockito.times(1)).findProductByCategory_CategoryType(CategoryType.IPHONE);
+        Mockito.verify(productMapper, Mockito.times(1)).productToDto(product);
+
+    }
+
+    @Test
+    @DisplayName("The test of deleting products by id")
+    void checkResponseFor_DeleteProductById_MethodIfIdIsValid() {
+        Long id = 1L;
+
+        productService.deleteProduct(id);
+
+        Mockito.verify(productRepository, Mockito.times(1)).deleteById(id);
 
     }
 

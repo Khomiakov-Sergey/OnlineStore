@@ -9,11 +9,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+/**
+ * DTO class for representing category.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDto {
     @Enumerated(EnumType.STRING)
-    CategoryType categoryType;
+    private CategoryType categoryType;
 }

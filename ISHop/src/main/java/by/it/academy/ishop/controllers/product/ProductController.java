@@ -21,7 +21,6 @@ import java.util.List;
  * @version 1.0
  */
 @Slf4j
-@RequestMapping
 @RestController
 @RequiredArgsConstructor
 public class ProductController {

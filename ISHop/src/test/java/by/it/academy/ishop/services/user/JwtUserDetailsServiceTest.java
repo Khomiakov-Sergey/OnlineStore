@@ -1,4 +1,4 @@
-package by.it.academy.ishop.services;
+package by.it.academy.ishop.services.user;
 
 import by.it.academy.ishop.configurations.JwtUser;
 import by.it.academy.ishop.entities.user.Role;
@@ -28,7 +28,7 @@ public class JwtUserDetailsServiceTest {
 
     @Test
     @DisplayName("Jwt user search test for valid login")
-    void getJwtUserWhenUserLoginIsValid() {
+    void checkResponseFor_LoadUserByUsername_MethodWhenUserLoginIsValid() {
         String login = "Iva";
 
         User user = User.builder()
@@ -53,7 +53,7 @@ public class JwtUserDetailsServiceTest {
 
     @Test
     @DisplayName("Jwt user search test for valid id in user")
-    void throwExceptionWhenUserLoginIsNotValid() {
+    void checkResponseFor_LoadUserByUsername_MethodWhenUserLoginIsNotValid() {
         String login = "Ivan1";
         Mockito.when(userRepository.findByLogin(login)).thenReturn(null);
         Assertions.assertThrows(UsernameNotFoundException.class, () -> jwtUserDetailsService.loadUserByUsername(login));

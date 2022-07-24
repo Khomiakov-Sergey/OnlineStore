@@ -9,8 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * This class is responsible for entity Order, which display what kind of product, and how mich it was
- * purchased by the user.
+ * Class for entity, which describes order(set of products, which user has already bought).
+ * @author Siarhei Khamiakou
+ * @version 1.0
  */
 @Data
 @NoArgsConstructor

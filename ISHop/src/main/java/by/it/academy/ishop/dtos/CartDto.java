@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
+/**
+ * DTO class for representing cart.
+ * @author Siarhei Khamiakou
+ * @version 1.0
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

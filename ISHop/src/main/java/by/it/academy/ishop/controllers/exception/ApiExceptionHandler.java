@@ -1,6 +1,10 @@
-package by.it.academy.ishop.exceptions;
+package by.it.academy.ishop.controllers.exception;
 
 import by.it.academy.ishop.dtos.exceptions.ResponseError;
+import by.it.academy.ishop.exceptions.EntityByIdNotFoundException;
+import by.it.academy.ishop.exceptions.ProductCreateException;
+import by.it.academy.ishop.exceptions.UserAuthenticationException;
+import by.it.academy.ishop.exceptions.UserRegistrationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -69,8 +73,8 @@ public class ApiExceptionHandler {
      * @return ResponseError.
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(Exception.class)
-    public ResponseError defaultException (Exception exception){
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseError defaultException (RuntimeException exception){
         log.info((exception.toString()));
         return new ResponseError(exception.getMessage());
     }

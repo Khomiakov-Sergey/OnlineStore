@@ -125,7 +125,8 @@ public class ProductApiService implements ProductService {
         }
         return Product.builder()
                 .model(productDto.getModel())
-                .category(categoryRepository.findByCategoryType(productDto.getCategory().getCategoryType()))
+                .category(categoryRepository.findByCategoryType(productDto.getCategory().getCategoryType()).
+                        orElseThrow(NoSuchElementException::new))
                 .price(productDto.getPrice())
                 .number(productDto.getNumber())
                 .description(productDto.getDescription())
