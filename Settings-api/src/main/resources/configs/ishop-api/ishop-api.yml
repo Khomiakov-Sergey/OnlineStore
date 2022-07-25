@@ -21,3 +21,5 @@ logging:
     by.it.academy.ishop: INFO
   file:
     path: logs
+
+
